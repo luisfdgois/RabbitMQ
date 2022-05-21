@@ -1,0 +1,33 @@
+version: '3.4'
+
+services: 
+    db-orderservice:
+        container_name: db-orderservice
+        image: postgres:latest
+        ports: 
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: OrderServiceDB
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: passPostgres1997
+        volumes:
+            - "db-orderservice:/var/lib/postgresql/data"
+
+    api:
+        container_name: api-orderservice
+        image: ${DOCKER_REGISTRY-}api
+        build: 
+            context: .
+            dockerfile: API/Dockerfile
+        depends_on: 
+            - db-orderservice
+        environment: 
+            DBServer: "db-orderservice"
+            DBPort: "5432"
+            DBUser: "postgres"
+            DBPassword: "passPostgres1997"
+            DataBase: "OrderServiceDB"
+        command: ["dotnet", "ef", "database update"]
+
+volumes:
+    db-orderservice:
