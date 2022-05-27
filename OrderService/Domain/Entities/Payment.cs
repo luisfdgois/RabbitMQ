@@ -7,6 +7,6 @@
         public Guid OrderId { get; private set; }
         public Order? Order { get; private set; }
 
-        protected Payment() { }
+        protected Payment() : base() { }
     }
 }

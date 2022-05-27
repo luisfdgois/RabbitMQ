@@ -10,13 +10,19 @@
 
         private Order() { }
 
-        public Order(string productDescription, decimal productValue, int productQuantity, string userEmail, Payment payment)
+        public Order(string productDescription, decimal productValue, int productQuantity, string userEmail)
         {
             ProductDescription = productDescription;
             ProductValue = productValue;
             ProductQuantity = productQuantity;
             UserEmail = userEmail;
+        }
+
+        public Order AddPaymentMethod(Payment payment)
+        {
             Payment = payment;
+
+            return this;
         }
     }
 }

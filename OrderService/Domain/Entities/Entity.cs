@@ -9,7 +9,7 @@
         public Entity()
         {
             Id = Guid.NewGuid();
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
         }
     }
 }
