@@ -1,4 +1,5 @@
-﻿using Application.UseCases.Models.Requests;
+﻿using Application.Shared.Extensions;
+using Application.UseCases.Models.Requests;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Data;
@@ -19,7 +20,8 @@ namespace Application.UseCases.Orders.RegisterOrder
 
         public async Task Execute(RegisterOrderDto dto)
         {
-            var order = _mapper.Map<Order>(dto);
+            var order = _mapper.Map<Order>(dto)
+                               .AddPaymentMethod(dto.Payment.Deserializer(dto.PaymentType));
 
             await _context.Set<Order>().AddAsync(order);
 

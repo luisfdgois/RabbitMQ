@@ -15,11 +15,8 @@ namespace Application.Shared.Mapping
 
         private void RequestDtoToDomain()
         {
-            CreateMap<RegisterPaymentDto, Payment>();
-            CreateMap<RegisterCreditCardDto, CreditCard>();
-
             CreateMap<RegisterOrderDto, Order>()
-                .ForMember(dest => dest.Payment, opt => opt.MapFrom(s => s.Payment));
+                .ForMember(dest => dest.Payment, opt => opt.Ignore());
         }
 
         private void DomainToResponseDto()
