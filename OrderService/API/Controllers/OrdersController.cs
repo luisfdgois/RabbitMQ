@@ -16,6 +16,16 @@ namespace API.Controllers
             return Ok(await useCase.Execute());
         }
 
+        /// <summary>
+        /// This function registers a new order
+        /// </summary>
+        /// <remarks>
+        /// ### Payment Type = CreditCard:
+        /// ####   Payment: 
+        /// *   { Number: "", CVV: "", NumberOfInstallment: 0, ValuePerInstallment: 0 }
+        /// </remarks>
+        /// <param name="useCase"></param>
+        /// <param name="dto"></param>
         [HttpPost]
         public async Task<IActionResult> RegisterOrder(
             [FromServices] IRegisterOrderUseCase useCase,
