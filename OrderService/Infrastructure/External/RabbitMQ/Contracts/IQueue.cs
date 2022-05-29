@@ -4,7 +4,7 @@ namespace Infrastructure.External.RabbitMQ.Contracts
 {
     public interface IQueue
     {
-        public bool IsMatch(AvailableQueue availableQueue);
+        bool IsMatch(AvailableQueue availableQueue);
         bool Publish(string jsonContent);
     }
 }
