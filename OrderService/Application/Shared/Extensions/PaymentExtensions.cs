@@ -1,5 +1,5 @@
-﻿using Application.UseCases.Models.Enums;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Models.Enums;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 

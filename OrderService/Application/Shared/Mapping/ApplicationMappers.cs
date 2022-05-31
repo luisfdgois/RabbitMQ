@@ -1,7 +1,9 @@
 ﻿using Application.UseCases.Models.Requests;
 using Application.UseCases.Models.Responses;
 using AutoMapper;
+using Domain.DTOs;
 using Domain.Entities;
+using Domain.Models.DTOs;
 
 namespace Application.Shared.Mapping
 {
@@ -10,6 +12,7 @@ namespace Application.Shared.Mapping
         public ApplicationMappers()
         {
             RequestDtoToDomain();
+            DomainToDomainDto();
             DomainToResponseDto();
         }
 
@@ -17,6 +20,14 @@ namespace Application.Shared.Mapping
         {
             CreateMap<RegisterOrderDto, Order>()
                 .ForMember(dest => dest.Payment, opt => opt.Ignore());
+        }
+
+        private void DomainToDomainDto()
+        {
+            CreateMap<CreditCard, CreditCardMessageDto>();
+
+            CreateMap<Payment, BusMessageDto>()
+                .Include(typeof(CreditCard), typeof(CreditCardMessageDto));
         }
 
         private void DomainToResponseDto()
