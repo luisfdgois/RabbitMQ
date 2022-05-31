@@ -18,7 +18,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddApplicationServices()
-                .AddOrderContext(configuration);
+                .AddOrderContext(configuration)
+                .AddInfrestructureServices(configuration);
 
 var app = builder.Build();
 
