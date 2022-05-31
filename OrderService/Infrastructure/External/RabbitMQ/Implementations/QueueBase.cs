@@ -44,8 +44,8 @@ namespace Infrastructure.External.RabbitMQ.Implementations
             _channel?.Close();
             _channel?.Dispose();
 
-            _connection.Close();
-            _connection.Dispose();
+            _connection?.Close();
+            _connection?.Dispose();
         }
     }
 }
