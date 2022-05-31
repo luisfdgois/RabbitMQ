@@ -13,6 +13,14 @@ services:
         volumes:
             - "db-orderservice:/var/lib/postgresql/data"
 
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - "15672:15672" 
+            - "5672:5672"
+            - "25676:25676"
+
     api:
         container_name: api-orderservice
         image: ${DOCKER_REGISTRY-}api
@@ -21,6 +29,7 @@ services:
             dockerfile: API/Dockerfile
         depends_on: 
             - db-orderservice
+            - rabbitmq
         environment: 
             DBServer: "db-orderservice"
             DBPort: "5432"
