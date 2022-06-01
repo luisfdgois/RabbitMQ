@@ -29,10 +29,11 @@ namespace Application.UseCases.Orders.RegisterOrder
 
             await _context.Set<Order>().AddAsync(order);
 
-            var published = _serviceBus.Publish(busMessage: _mapper.Map<BusMessageDto>(order.Payment));
+            var busMessage = _mapper.Map<BusMessageDto>(order.Payment);
 
-            if (published)
-                await _context.SaveChangesAsync();
+            _serviceBus.Publish(busMessage);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
