@@ -20,8 +20,8 @@ namespace API.Controllers
         /// This function registers a new order
         /// </summary>
         /// <remarks>
-        /// ### Payment Type = CreditCard:
-        /// ####   Payment: 
+        /// ### PaymentType = 1 (CreditCard):
+        /// ####   Payment Properties: 
         /// *   { Number: "", CVV: "", NumberOfInstallment: 0, ValuePerInstallment: 0 }
         /// </remarks>
         /// <param name="useCase"></param>
