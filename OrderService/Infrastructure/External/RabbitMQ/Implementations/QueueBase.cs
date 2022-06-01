@@ -1,10 +1,12 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 namespace Infrastructure.External.RabbitMQ.Implementations
 {
     public abstract class QueueBase : IDisposable
     {
-        private readonly ConnectionFactory _connectionFactory;
+        protected readonly ConnectionFactory _connectionFactory;
+        protected readonly ILogger<QueueBase> _logger;
         protected IConnection _connection;
         protected IModel _channel;
 
@@ -12,9 +14,10 @@ namespace Infrastructure.External.RabbitMQ.Implementations
         protected readonly string _routingKey;
         protected readonly string _exchange = "order-exchange";
 
-        protected QueueBase(ConnectionFactory connectionFactory, string queue, string routingKey)
+        protected QueueBase(ConnectionFactory connectionFactory, ILogger<QueueBase> logger, string queue, string routingKey)
         {
             _connectionFactory = connectionFactory;
+            _logger = logger;
 
             _queue = queue;
             _routingKey = routingKey;

@@ -1,5 +1,6 @@
 ﻿using Infrastructure.External.RabbitMQ.Contracts;
 using Infrastructure.External.RabbitMQ.Settings;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 
@@ -7,8 +8,8 @@ namespace Infrastructure.External.RabbitMQ.Implementations
 {
     public class CreditCardQueue : QueueBase, IQueue
     {
-        public CreditCardQueue(ConnectionFactory connectionFactory) :
-            base(connectionFactory, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
+        public CreditCardQueue(ConnectionFactory connectionFactory, ILogger<CreditCardQueue> logger) :
+            base(connectionFactory, logger, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
         { }
 
         public bool IsMatch(AvailableQueue availableQueue)
@@ -29,7 +30,10 @@ namespace Infrastructure.External.RabbitMQ.Implementations
 
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error trying to publish message to the {_queue}. Body: {jsonContent}. ErrorMessage: {ex.Message}");
+            }
 
             return false;
         }

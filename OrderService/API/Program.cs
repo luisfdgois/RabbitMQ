@@ -1,9 +1,16 @@
 using Application;
 using Infrastructure;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+var logger = new LoggerConfiguration().ReadFrom.Configuration(configuration)
+                                      .Enrich.FromLogContext()
+                                      .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 builder.Services.AddEndpointsApiExplorer();
 
