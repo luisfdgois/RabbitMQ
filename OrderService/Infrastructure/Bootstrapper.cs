@@ -1,9 +1,9 @@
 ﻿using Domain.Services.Bus;
 using Infrastructure.Data;
-using Infrastructure.External.RabbitMQ.Contracts;
-using Infrastructure.External.RabbitMQ.Implementations;
+using Infrastructure.External.RabbitMQ.Publishers.Concrete;
+using Infrastructure.External.RabbitMQ.Publishers.Contracts;
+using Infrastructure.External.RabbitMQ.Shared.Settings;
 using Infrastructure.Services;
-using Infrastructure.Services.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,12 +24,16 @@ namespace Infrastructure
 
         public static IServiceCollection AddInfrestructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IPublisherServiceBus, PublisherServiceBus>();
-
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
 
-            services.AddSingleton(serviceProvider => { return new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) }; })
-                    .AddSingleton<IQueue, CreditCardQueue>();
+            services.AddSingleton(serviceProvider =>
+            {
+                var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) };
+                return connectionFactory.CreateConnection();
+            });
+
+            services.AddScoped<IPublisherServiceBus, PublisherServiceBus>()
+                    .AddScoped<IPublisherQueue, CreditCardQueue>();
 
             return services;
         }
