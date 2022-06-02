@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Services.Settings
+﻿namespace Infrastructure.External.RabbitMQ.Shared.Settings
 {
     public class RabbitMQProperties
     {

@@ -1,15 +1,15 @@
-﻿using Infrastructure.External.RabbitMQ.Contracts;
-using Infrastructure.External.RabbitMQ.Settings;
+﻿using Infrastructure.External.RabbitMQ.Publishers.Contracts;
+using Infrastructure.External.RabbitMQ.Publishers.Settings;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Infrastructure.External.RabbitMQ.Implementations
+namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
 {
-    public class CreditCardQueue : QueueBase, IQueue
+    public class CreditCardQueue : PublisherQueueBase, IPublisherQueue
     {
-        public CreditCardQueue(ConnectionFactory connectionFactory, ILogger<CreditCardQueue> logger) :
-            base(connectionFactory, logger, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
+        public CreditCardQueue(IConnection connection, ILogger<CreditCardQueue> logger) :
+            base(connection, logger, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
         { }
 
         public bool IsMatch(AvailableQueue availableQueue)

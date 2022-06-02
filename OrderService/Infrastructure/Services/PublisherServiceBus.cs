@@ -1,15 +1,15 @@
 ﻿using Domain.Models.DTOs;
 using Domain.Services.Bus;
-using Infrastructure.External.RabbitMQ.Contracts;
-using Infrastructure.External.RabbitMQ.Settings;
+using Infrastructure.External.RabbitMQ.Publishers.Contracts;
+using Infrastructure.External.RabbitMQ.Publishers.Settings;
 
 namespace Infrastructure.Services
 {
     public class PublisherServiceBus : IPublisherServiceBus
     {
-        private readonly IEnumerable<IQueue> _queues;
+        private readonly IEnumerable<IPublisherQueue> _queues;
 
-        public PublisherServiceBus(IEnumerable<IQueue> queues)
+        public PublisherServiceBus(IEnumerable<IPublisherQueue> queues)
         {
             _queues = queues;
         }

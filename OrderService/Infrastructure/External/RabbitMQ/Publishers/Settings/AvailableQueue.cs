@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.External.RabbitMQ.Settings
+﻿namespace Infrastructure.External.RabbitMQ.Publishers.Settings
 {
     public enum AvailableQueue
     {
