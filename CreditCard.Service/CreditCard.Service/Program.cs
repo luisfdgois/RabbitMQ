@@ -1,4 +1,5 @@
 using CreditCard.Service;
+using Serilog;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
@@ -9,6 +10,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.ConfigureConsumerServices(configuration);
     })
+    .UseSerilog((context, configuration) => { configuration.ReadFrom.Configuration(context.Configuration); })
     .Build();
 
 await host.RunAsync();
