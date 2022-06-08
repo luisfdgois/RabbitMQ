@@ -1,4 +1,5 @@
 ﻿using CreditCard.Service.RabbitMQ.Consumer;
+using CreditCard.Service.RabbitMQ.Publisher;
 using RabbitMQ.Client;
 
 namespace CreditCard.Service
@@ -10,6 +11,7 @@ namespace CreditCard.Service
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
 
             services.AddTransient<IQueueConsumer, QueueConsumer>()
+                    .AddTransient<IQueuePublisher, QueuePublisher>()
                     .AddTransient(serviceProvider =>
                     {
                         var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) };
