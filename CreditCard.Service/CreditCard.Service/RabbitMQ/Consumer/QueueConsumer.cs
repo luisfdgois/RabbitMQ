@@ -1,4 +1,4 @@
-﻿using CreditCard.Service.RabbitMQ.Consumer.Models;
+﻿using CreditCard.Service.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;

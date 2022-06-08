@@ -1,4 +1,4 @@
-﻿using CreditCard.Service.RabbitMQ.Consumer.Models;
+﻿using CreditCard.Service.Models;
 
 namespace CreditCard.Service.RabbitMQ.Consumer
 {

@@ -1,4 +1,4 @@
-﻿namespace CreditCard.Service.RabbitMQ.Consumer.Models
+﻿namespace CreditCard.Service.Models
 {
     public class CreditCardMessage
     {
