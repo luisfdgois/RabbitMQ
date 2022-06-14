@@ -1,10 +1,10 @@
-﻿using Infrastructure.External.RabbitMQ.Publishers.Contracts;
-using Infrastructure.External.RabbitMQ.Publishers.Settings;
+﻿using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts;
+using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Settings;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
+namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
 {
     public class CreditCardQueue : PublisherQueueBase, IPublisherQueue
     {
@@ -23,10 +23,7 @@ namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
             {
                 var body = Encoding.UTF8.GetBytes(jsonContent);
 
-                var properties = _channel.CreateBasicProperties();
-                properties.Persistent = true;
-
-                _channel.BasicPublish(exchange: _exchange, routingKey: _routingKey, basicProperties: properties, body: body);
+                _channel.BasicPublish(exchange: _exchange, routingKey: _routingKey, basicProperties: GetQueueProperties(), body: body);
 
                 return true;
             }
@@ -36,6 +33,14 @@ namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
             }
 
             return false;
+        }
+
+        private IBasicProperties GetQueueProperties()
+        {
+            var properties = _channel.CreateBasicProperties();
+            properties.Persistent = true;
+
+            return properties;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Domain.DTOs
 {
-    public class CreditCardMessageDto : BusMessageDto
+    public class CreditCardMessage : BusMessage
     {
         public Guid OrderId { get; set; }
         public string Number { get; private set; }

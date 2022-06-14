@@ -24,10 +24,10 @@ namespace Application.Shared.Mapping
 
         private void DomainToDomainDto()
         {
-            CreateMap<CreditCard, CreditCardMessageDto>();
+            CreateMap<CreditCard, CreditCardMessage>();
 
-            CreateMap<Payment, BusMessageDto>()
-                .Include(typeof(CreditCard), typeof(CreditCardMessageDto));
+            CreateMap<Payment, BusMessage>()
+                .Include(typeof(CreditCard), typeof(CreditCardMessage));
         }
 
         private void DomainToResponseDto()

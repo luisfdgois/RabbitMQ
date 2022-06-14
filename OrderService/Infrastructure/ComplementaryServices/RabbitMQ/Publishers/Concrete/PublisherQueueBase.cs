@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
+namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
 {
     public abstract class PublisherQueueBase : IDisposable
     {
@@ -13,7 +13,8 @@ namespace Infrastructure.External.RabbitMQ.Publishers.Concrete
         protected readonly string _routingKey;
         protected readonly string _exchange = "order-exchange";
 
-        protected PublisherQueueBase(IConnection connection, ILogger<PublisherQueueBase> logger, string queue, string routingKey)
+        protected PublisherQueueBase(IConnection connection, ILogger<PublisherQueueBase> logger,
+            string queue, string routingKey)
         {
             _connection = connection;
             _logger = logger;

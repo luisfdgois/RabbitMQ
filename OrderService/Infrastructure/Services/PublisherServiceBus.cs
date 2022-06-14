@@ -1,7 +1,7 @@
 ﻿using Domain.Models.DTOs;
 using Domain.Services.Bus;
-using Infrastructure.External.RabbitMQ.Publishers.Contracts;
-using Infrastructure.External.RabbitMQ.Publishers.Settings;
+using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts;
+using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Settings;
 
 namespace Infrastructure.Services
 {
@@ -14,7 +14,7 @@ namespace Infrastructure.Services
             _queues = queues;
         }
 
-        public bool Publish(BusMessageDto busMessage)
+        public bool Publish(BusMessage busMessage)
         {
             var jsonContent = busMessage.ToString();
 

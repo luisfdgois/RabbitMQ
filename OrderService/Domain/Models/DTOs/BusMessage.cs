@@ -2,7 +2,7 @@
 
 namespace Domain.Models.DTOs
 {
-    public abstract class BusMessageDto
+    public abstract class BusMessage
     {
         public virtual PaymentTypeDto PaymentType { get; }
     }
