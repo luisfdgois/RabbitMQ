@@ -1,9 +1,12 @@
-﻿using Domain.Services.Bus;
+﻿using Domain.Repositories;
+using Domain.Services.Bus;
+using Infrastructure.Background;
+using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete;
+using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts;
 using Infrastructure.Data;
-using Infrastructure.External.RabbitMQ.Publishers.Concrete;
-using Infrastructure.External.RabbitMQ.Publishers.Contracts;
-using Infrastructure.External.RabbitMQ.Shared.Settings;
+using Infrastructure.Data.Repositories;
 using Infrastructure.Services;
+using Infrastructure.Shared.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +25,20 @@ namespace Infrastructure
             return services;
         }
 
+        public static IServiceCollection AddBackgroundService(this IServiceCollection services)
+        {
+            services.AddHostedService<PaymentProcessedWorker>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            return services;
+        }
+
         public static IServiceCollection AddInfrestructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
@@ -33,6 +50,7 @@ namespace Infrastructure
             });
 
             services.AddScoped<IPublisherServiceBus, PublisherServiceBus>()
+                    .AddSingleton<IConsumerServiceBus, ConsumerServiceBus>()
                     .AddScoped<IPublisherQueue, CreditCardQueue>();
 
             return services;
