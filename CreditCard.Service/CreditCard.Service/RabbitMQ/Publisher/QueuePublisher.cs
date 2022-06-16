@@ -10,6 +10,7 @@ namespace CreditCard.Service.RabbitMQ.Publisher
         private IModel _channel;
 
         private readonly string _queue = "paymentprocessed-queue";
+        private readonly string _exchange = "paymentprocessed-exchange";
 
         public QueuePublisher(ILogger<QueuePublisher> logger, IConnection connection)
         {
@@ -25,10 +26,7 @@ namespace CreditCard.Service.RabbitMQ.Publisher
             {
                 var body = Encoding.UTF8.GetBytes(message);
 
-                var properties = _channel.CreateBasicProperties();
-                properties.Persistent = true;
-
-                _channel.BasicPublish(exchange: "", routingKey: _queue, basicProperties: properties, body: body);
+                _channel.BasicPublish(exchange: _exchange, routingKey: _queue, basicProperties: GetQueueProperties(), body: body);
 
                 return true;
             }
@@ -47,7 +45,19 @@ namespace CreditCard.Service.RabbitMQ.Publisher
 
             _channel = _connection.CreateModel();
 
+            _channel.ExchangeDeclare(exchange: _exchange, type: "fanout", autoDelete: false);
+
             _channel.QueueDeclare(queue: _queue, durable: true, exclusive: false, autoDelete: false);
+
+            _channel.QueueBind(queue: _queue, exchange: _exchange, routingKey: _queue);
+        }
+
+        private IBasicProperties GetQueueProperties()
+        {
+            var properties = _channel.CreateBasicProperties();
+            properties.Persistent = true;
+
+            return properties;
         }
 
         public void Dispose()

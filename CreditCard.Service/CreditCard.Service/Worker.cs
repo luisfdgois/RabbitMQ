@@ -1,3 +1,4 @@
+using CreditCard.Service.Models;
 using CreditCard.Service.RabbitMQ.Consumer;
 using CreditCard.Service.RabbitMQ.Publisher;
 
@@ -22,23 +23,20 @@ namespace CreditCard.Service
         {
             _consumer.Consume();
 
-            while (!stoppingToken.IsCancellationRequested)
+            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+
+            await Task.CompletedTask;
+        }
+
+        private async Task OnMessageAsync(object sender, QueueConsumerEventArgs args) =>
+
+            await Task.Run(() =>
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
 
-                await Task.Delay(5000, stoppingToken);
-            }
-        }
+                CreditAnalysisService.Analyze(args.Message, out ProcessedCreditMessage processedCredit);
 
-        private async Task OnMessageAsync(object sender, QueueConsumerEventArgs args)
-        {
-            _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
-
-            var result = CreditAnalysisService.Analyze(args.Message);
-
-            var message = result.ToString();
-
-            _publisher.Publish(message);
-        }
+                _publisher.Publish(message: processedCredit.ToString());
+            });
     }
 }

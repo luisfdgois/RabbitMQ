@@ -28,13 +28,13 @@ namespace CreditCard.Service.RabbitMQ.Consumer
 
             consumer.Received += async (model, eventArgs) =>
             {
-                CreditCardMessage message = null;
+                var content = string.Empty;
 
                 try
                 {
-                    var content = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
+                    content = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
 
-                    message = JsonSerializer.Deserialize<CreditCardMessage>(content);
+                    var message = JsonSerializer.Deserialize<CreditCardMessage>(content);
 
                     await OnMessage(this, new QueueConsumerEventArgs(message));
 
@@ -42,7 +42,7 @@ namespace CreditCard.Service.RabbitMQ.Consumer
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error trying to process the message. OrderId: {message?.OrderId}. ErrorMessage: {ex?.Message}");
+                    _logger.LogError($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
 
                     _channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: true);
                 }

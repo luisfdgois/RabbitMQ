@@ -4,9 +4,11 @@ namespace CreditCard.Service
 {
     public class CreditAnalysisService
     {
-        public static ProcessedCreditMessage Analyze(CreditCardMessage creditCard)
+        public static void Analyze(CreditCardMessage creditCard, out ProcessedCreditMessage processedCreditMessage)
         {
-            return new ProcessedCreditMessage { OrderId = creditCard.OrderId, PaymentApproved = CreditApproved() };
+            Task.Delay(5000);
+
+            processedCreditMessage = new ProcessedCreditMessage { OrderId = creditCard.OrderId, PaymentApproved = CreditApproved() };
         }
 
         private static bool CreditApproved() =>
