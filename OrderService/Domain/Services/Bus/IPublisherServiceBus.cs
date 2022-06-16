@@ -4,6 +4,6 @@ namespace Domain.Services.Bus
 {
     public interface IPublisherServiceBus
     {
-        bool Publish(BusMessageDto busMessage);
+        bool Publish(BusMessage busMessage);
     }
 }

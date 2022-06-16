@@ -1,6 +1,15 @@
 version: '3.4'
 
 services: 
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - "15672:15672" 
+            - "5672:5672"
+            - "25676:25676"
+
     db-orderservice:
         container_name: db-orderservice
         image: postgres:latest
@@ -12,14 +21,6 @@ services:
             POSTGRES_PASSWORD: passPostgres1997
         volumes:
             - "db-orderservice:/var/lib/postgresql/data"
-
-    rabbitmq:
-        container_name: rabbitmq
-        image: rabbitmq:3-management
-        ports:
-            - "15672:15672" 
-            - "5672:5672"
-            - "25676:25676"
 
     api:
         container_name: api-orderservice

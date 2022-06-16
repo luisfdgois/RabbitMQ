@@ -21,11 +21,9 @@ namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
 
             _queue = queue;
             _routingKey = routingKey;
-
-            ConnectToRabbitMQ();
         }
 
-        private void ConnectToRabbitMQ()
+        protected void ConnectToRabbitMQ()
         {
             if (_channel is object && _channel.IsOpen)
                 return;

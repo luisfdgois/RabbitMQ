@@ -3,9 +3,8 @@ using Application.UseCases.Models.Requests;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Models.DTOs;
+using Domain.Repositories;
 using Domain.Services.Bus;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Orders.RegisterOrder
 {
@@ -13,13 +12,13 @@ namespace Application.UseCases.Orders.RegisterOrder
     {
         private readonly IMapper _mapper;
         private readonly IPublisherServiceBus _serviceBus;
-        private readonly DbContext _context;
+        private readonly IOrderRepository _repository;
 
-        public RegisterOrderUseCase(IMapper mapper, IPublisherServiceBus serviceBus, OrderContext context)
+        public RegisterOrderUseCase(IMapper mapper, IPublisherServiceBus serviceBus, IOrderRepository repository)
         {
             _mapper = mapper;
             _serviceBus = serviceBus;
-            _context = context;
+            _repository = repository;
         }
 
         public async Task Execute(RegisterOrderDto dto)
@@ -27,13 +26,13 @@ namespace Application.UseCases.Orders.RegisterOrder
             var order = _mapper.Map<Order>(dto)
                                .AddPaymentMethod(dto.Payment.Deserializer(dto.PaymentType));
 
-            await _context.Set<Order>().AddAsync(order);
+            await _repository.Add(order);
 
             var busMessage = _mapper.Map<BusMessage>(order.Payment);
 
             _serviceBus.Publish(busMessage);
 
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
     }
 }

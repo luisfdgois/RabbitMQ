@@ -1,4 +1,5 @@
 using Application;
+using Domain;
 using Infrastructure;
 using Serilog;
 using System.Reflection;
@@ -24,9 +25,13 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
+builder.Services.AddDomainProcess();
+
 builder.Services.AddApplicationServices()
                 .AddOrderContext(configuration)
-                .AddInfrestructureServices(configuration);
+                .AddRepositories()
+                .AddInfrestructureServices(configuration)
+                .AddBackgroundService();
 
 var app = builder.Build();
 

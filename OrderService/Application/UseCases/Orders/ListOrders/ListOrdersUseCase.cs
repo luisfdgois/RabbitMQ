@@ -1,25 +1,23 @@
 ﻿using Application.UseCases.Models.Responses;
 using AutoMapper;
-using Domain.Entities;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Domain.Repositories;
 
 namespace Application.UseCases.Orders.ListOrders
 {
     public class ListOrdersUseCase : IListOrdersUseCase
     {
         private readonly IMapper _mapper;
-        private readonly DbContext _context;
+        private readonly IOrderRepository _repository;
 
-        public ListOrdersUseCase(IMapper mapper, OrderContext context)
+        public ListOrdersUseCase(IMapper mapper, IOrderRepository repository)
         {
             _mapper = mapper;
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<List<OrderDto>> Execute()
         {
-            return _mapper.Map<List<OrderDto>>(await _context.Set<Order>().ToListAsync());
+            return _mapper.Map<List<OrderDto>>(await _repository.GetAll());
         }
     }
 }

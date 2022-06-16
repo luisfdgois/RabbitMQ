@@ -18,7 +18,7 @@ namespace Infrastructure.Services
         {
             var jsonContent = busMessage.ToString();
 
-            var queue = _queues.FirstOrDefault(q => q.IsMatch((AvailableQueue)busMessage.PaymentType));
+            var queue = _queues.FirstOrDefault(q => q.Queue == (AvailableQueue)busMessage.PaymentType);
 
             if (queue is object) return queue.Publish(jsonContent);
 

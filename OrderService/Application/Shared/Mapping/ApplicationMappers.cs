@@ -33,7 +33,8 @@ namespace Application.Shared.Mapping
         private void DomainToResponseDto()
         {
             CreateMap<Order, OrderDto>()
-                .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(s => s.CreationDate));
+                .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(s => s.CreationDate))
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(s => s.Payment.Approved));
         }
     }
 }

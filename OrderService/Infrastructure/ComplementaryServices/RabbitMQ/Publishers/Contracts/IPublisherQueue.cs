@@ -4,7 +4,7 @@ namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts
 {
     public interface IPublisherQueue
     {
-        bool IsMatch(AvailableQueue availableQueue);
+        AvailableQueue Queue { get; }
         bool Publish(string jsonContent);
     }
 }

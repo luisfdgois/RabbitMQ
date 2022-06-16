@@ -3,6 +3,7 @@
     public class OrderDto
     {
         public Guid Id { get; set; }
+        public bool Approved { get; set; }
         public string ProductDescription { get; private set; }
         public decimal ProductValue { get; private set; }
         public int ProductQuantity { get; private set; }

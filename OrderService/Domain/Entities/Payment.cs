@@ -8,5 +8,10 @@
         public Order? Order { get; private set; }
 
         protected Payment() : base() { }
+
+        public void UpdateStatus(bool approved)
+        {
+            Approved = approved;
+        }
     }
 }

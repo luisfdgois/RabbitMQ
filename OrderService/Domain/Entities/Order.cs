@@ -24,5 +24,13 @@
 
             return this;
         }
+
+        public void UpdatePaymentStatus(bool approved)
+        {
+            if (Payment is null)
+                throw new NullReferenceException("Payment information not found.");
+
+            Payment.UpdateStatus(approved);
+        }
     }
 }
