@@ -1,7 +1,7 @@
 ﻿namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Settings
 {
-    public enum AvailableQueue
+    public enum QueueMessage
     {
-        CreditCard = 1
+        CreditCardMessage = 1
     }
 }

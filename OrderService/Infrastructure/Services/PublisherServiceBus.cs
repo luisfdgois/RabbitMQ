@@ -1,7 +1,6 @@
 ﻿using Domain.Models.DTOs;
 using Domain.Services.Bus;
 using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts;
-using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Settings;
 
 namespace Infrastructure.Services
 {
@@ -18,7 +17,9 @@ namespace Infrastructure.Services
         {
             var jsonContent = busMessage.ToString();
 
-            var queue = _queues.FirstOrDefault(q => q.Queue == (AvailableQueue)busMessage.PaymentType);
+            var messageTypeName = busMessage.GetType().Name;
+
+            var queue = _queues.FirstOrDefault(q => q.QueueMessage.ToString().Equals(messageTypeName));
 
             if (queue is object) return queue.Publish(jsonContent);
 

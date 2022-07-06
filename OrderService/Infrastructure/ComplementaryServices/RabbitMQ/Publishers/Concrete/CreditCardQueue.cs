@@ -12,7 +12,7 @@ namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
             base(connection, logger, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
         { }
 
-        public AvailableQueue Queue { get { return AvailableQueue.CreditCard; } }
+        public QueueMessage QueueMessage { get { return QueueMessage.CreditCardMessage; } }
 
         public bool Publish(string jsonContent)
         {
