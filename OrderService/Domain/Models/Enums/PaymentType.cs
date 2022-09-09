@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.Enums
 {
-    public enum PaymentTypeDto
+    public enum PaymentType
     {
         CreditCard = 1
     }

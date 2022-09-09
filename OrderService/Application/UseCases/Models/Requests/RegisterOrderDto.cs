@@ -9,7 +9,7 @@ namespace Application.UseCases.Models.Requests
         public decimal ProductValue { get; set; }
         public int ProductQuantity { get; set; }
         public string UserEmail { get; set; }
-        public PaymentTypeDto PaymentType { get; set; }
+        public PaymentType PaymentType { get; set; }
         public JObject Payment { get; set; }
     }
 }
