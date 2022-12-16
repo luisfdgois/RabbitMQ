@@ -1,7 +1,7 @@
 
 ## ORDER PAYMENT SERVICE
 
-Obs: Esse é um projeto simples que tem como intenção a aplicação prática do conhecimento que venho adiquirindo ao longo do meu aprendizado em serviços de mensageria. A intenção é que ataulizações e mudanças (com melhorias) vão sendo realizadas a medida que novos problemas/necessidades vão surgindo. Sugestões e criticas são sempre bem-vindas.
+Obs: Esse é um projeto simples que tem como objetivo a aplicação prática do conhecimento que venho adiquirindo ao longo do meu aprendizado em serviços de mensageria. A intenção é que ataulizações e mudanças vão sendo realizadas a medida que novos problemas/necessidades vão surgindo.
 
 #### Sobre
 
