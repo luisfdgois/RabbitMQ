@@ -26,8 +26,9 @@ services:
         container_name: api-orderservice
         image: ${DOCKER_REGISTRY-}api
         build: 
-            context: .
+            context: OrderService
             dockerfile: API/Dockerfile
+        restart: always
         depends_on: 
             - db-orderservice
             - rabbitmq
@@ -38,6 +39,16 @@ services:
             DBPassword: "passPostgres1997"
             DataBase: "OrderServiceDB"
         command: ["dotnet", "ef", "database update"]
+
+    worker-creditcard: 
+        container_name: worker-creditcard
+        image: ${DOCKER_REGISTRY-}creditcard
+        build: 
+            context: CreditCard
+            dockerfile: CreditCard/Dockerfile
+        restart: always
+        depends_on: 
+            - rabbitmq
 
 volumes:
     db-orderservice:
