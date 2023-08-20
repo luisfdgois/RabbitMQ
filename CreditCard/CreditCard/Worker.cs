@@ -1,18 +1,16 @@
-using CreditCard.Service.Models;
-using CreditCard.Service.RabbitMQ.Consumer;
-using CreditCard.Service.RabbitMQ.Publisher;
+using CreditCard.Models;
+using CreditCard.RabbitMQ.Consumer;
+using CreditCard.RabbitMQ.Publisher;
 
-namespace CreditCard.Service
+namespace CreditCard
 {
     public class Worker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
         private readonly IQueueConsumer _consumer;
         private readonly IQueuePublisher _publisher;
 
-        public Worker(ILogger<Worker> logger, IQueueConsumer consumer, IQueuePublisher publisher)
+        public Worker(IQueueConsumer consumer, IQueuePublisher publisher)
         {
-            _logger = logger;
             _consumer = consumer;
             _publisher = publisher;
 
@@ -23,7 +21,7 @@ namespace CreditCard.Service
         {
             _consumer.Consume();
 
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            Console.Write($"Worker running at: {DateTimeOffset.Now}");
 
             await Task.CompletedTask;
         }
@@ -32,7 +30,7 @@ namespace CreditCard.Service
 
             await Task.Run(() =>
             {
-                _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
+                Console.Write($"New Message. OrderId: {args.Message.OrderId}");
 
                 CreditAnalysisService.Analyze(args.Message, out ProcessedCreditMessage processedCredit);
 

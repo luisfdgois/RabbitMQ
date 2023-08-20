@@ -1,8 +1,8 @@
-﻿using CreditCard.Service.Models;
+﻿using CreditCard.Models;
 
-namespace CreditCard.Service.RabbitMQ.Consumer
+namespace CreditCard.RabbitMQ.Consumer
 {
-    public class QueueConsumerEventArgs : EventArgs 
+    public class QueueConsumerEventArgs : EventArgs
     {
         public CreditCardMessage Message { get; }
 

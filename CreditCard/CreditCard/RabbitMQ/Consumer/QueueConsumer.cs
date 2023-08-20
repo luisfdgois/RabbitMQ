@@ -1,22 +1,20 @@
-﻿using CreditCard.Service.Models;
+﻿using CreditCard.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace CreditCard.Service.RabbitMQ.Consumer
+namespace CreditCard.RabbitMQ.Consumer
 {
     public class QueueConsumer : IQueueConsumer
     {
-        private readonly ILogger<QueueConsumer> _logger;
         private readonly IConnection _connection;
         private IModel _channel;
 
         private readonly string _queueName = "creditcard-queue";
 
-        public QueueConsumer(ILogger<QueueConsumer> logger, IConnection connection)
+        public QueueConsumer(IConnection connection)
         {
-            _logger = logger;
             _connection = connection;
 
             ConnectToRabbitMQ();
@@ -42,7 +40,7 @@ namespace CreditCard.Service.RabbitMQ.Consumer
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
+                    Console.WriteLine($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
 
                     _channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: true);
                 }

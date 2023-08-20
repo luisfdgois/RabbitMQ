@@ -1,11 +1,4 @@
-using CreditCard.Service;
-using Serilog;
-
-void SetLogBehaviour(HostBuilderContext context, LoggerConfiguration configuration)
-{
-    configuration.ReadFrom.Configuration(context.Configuration)
-                 .WriteTo.Console();
-}
+using CreditCard;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
@@ -16,7 +9,6 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.ConfigureConsumerServices(configuration);
     })
-    .UseSerilog(SetLogBehaviour)
     .Build();
 
 await host.RunAsync();

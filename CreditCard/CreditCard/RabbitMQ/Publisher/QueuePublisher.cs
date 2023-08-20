@@ -1,20 +1,18 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-namespace CreditCard.Service.RabbitMQ.Publisher
+namespace CreditCard.RabbitMQ.Publisher
 {
     public class QueuePublisher : IQueuePublisher
     {
-        private readonly ILogger<QueuePublisher> _logger;
         private readonly IConnection _connection;
         private IModel _channel;
 
         private readonly string _queue = "paymentprocessed-queue";
         private readonly string _exchange = "paymentprocessed-exchange";
 
-        public QueuePublisher(ILogger<QueuePublisher> logger, IConnection connection)
+        public QueuePublisher(IConnection connection)
         {
-            _logger = logger;
             _connection = connection;
 
             ConnectToRabbitMQ();
@@ -32,7 +30,7 @@ namespace CreditCard.Service.RabbitMQ.Publisher
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error trying to publish message to the {_queue}. Body: {message}. ErrorMessage: {ex.Message}");
+                Console.WriteLine($"Error trying to publish message to the {_queue}. Body: {message}. ErrorMessage: {ex.Message}");
             }
 
             return false;

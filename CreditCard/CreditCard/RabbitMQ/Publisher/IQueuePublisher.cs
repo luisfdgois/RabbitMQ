@@ -1,4 +1,4 @@
-﻿namespace CreditCard.Service.RabbitMQ.Publisher
+﻿namespace CreditCard.RabbitMQ.Publisher
 {
     public interface IQueuePublisher
     {

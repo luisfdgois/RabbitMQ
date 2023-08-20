@@ -1,6 +1,6 @@
-﻿using CreditCard.Service.Models;
+﻿using CreditCard.Models;
 
-namespace CreditCard.Service
+namespace CreditCard
 {
     public class CreditAnalysisService
     {
