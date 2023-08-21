@@ -25,6 +25,8 @@ services:
     api:
         container_name: api-orderservice
         image: ${DOCKER_REGISTRY-}api
+        ports: 
+            - "44335:80"
         build: 
             context: OrderService
             dockerfile: API/Dockerfile
@@ -33,6 +35,7 @@ services:
             - db-orderservice
             - rabbitmq
         environment: 
+            ASPNETCORE_ENVIRONMENT: Development
             DBServer: "db-orderservice"
             DBPort: "5432"
             DBUser: "postgres"
@@ -47,6 +50,8 @@ services:
             context: CreditCard
             dockerfile: CreditCard/Dockerfile
         restart: always
+        environment: 
+            DOTNET_ENVIRONMENT: Development
         depends_on: 
             - rabbitmq
 
