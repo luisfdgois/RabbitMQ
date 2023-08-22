@@ -1,14 +1,23 @@
 
 ## ORDER PAYMENT SERVICE
 
-Obs: Esse é um projeto que tem como objetivo a aplicação prática do conhecimento que venho adiquirindo ao longo do meu aprendizado em serviços de mensageria. A intenção é que atualizações e mudanças vão sendo realizadas a medida que novos problemas/necessidades vão surgindo.
+This project consists of an OrderService that exposes a REST API with two endpoints: one for registering orders and another for listing registered orders. The CreditCard service simulates a simplified process of credit analysis and approval by a credit card company. The goal is to expand and add more services according to the types/options of payments that will be available. The communication between these services is done asynchronously using RabbitMQ.
 
-#### Sobre
+The project aims to practically apply the knowledge I have been acquiring throughout my learning journey in message queuing services. Updates and changes will be made as new problems/needs arise.
 
-O Projeto é composto por um serviço de pedidos (OrderService) que expõe uma API (Rest) Gateway com dois endpoints, um para registrar pedidos e o outro para listar os pedidos registrados.
-O outro serviço (CreditCard.Service) simula, de forma simples, o processo de análise e aprovação de créditos por uma administradora de cartão de crédito. A ideia é expandir e adicionar mais serviços de acordo com os tipos/opções de pagamentos que ficarão disponíveis.
-A comunicação entre esses serviços é feita de forma assíncrona, utlizando o RabbitMQ.
-
-#### Fluxo
+### Flow
 
 ![order-payment-service](https://user-images.githubusercontent.com/50787263/174161888-06fbed7b-a092-47e8-83af-189140f07c38.png)
+
+
+### Execution
+
+Prior installation of Docker on the machine is required for execution.
+
+In the terminal, navigate to the root directory of the projects, where the docker-compose.yml file is located, and run the following command:
+
+```bash
+docker-compose up -d
+```
+
+Please feel free to modify and expand this README as needed to provide more details about your project.
