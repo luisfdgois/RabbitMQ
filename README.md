@@ -20,4 +20,3 @@ In the terminal, navigate to the root directory of the projects, where the docke
 docker-compose up -d
 ```
 
-Please feel free to modify and expand this README as needed to provide more details about your project.
