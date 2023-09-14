@@ -2,21 +2,20 @@
 using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Settings;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
+using System;
 using System.Text;
 
 namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
 {
     public class CreditCardQueue : PublisherQueueBase, IPublisherQueue
     {
-        public CreditCardQueue(IConnection connection, ILogger<CreditCardQueue> logger) :
-            base(connection, logger, queue: "creditcard-queue", routingKey: "creditcard-routingkey")
-        { }
+        public CreditCardQueue(IConnection connection, ILogger<CreditCardQueue> logger) : base(connection, logger, routingKey: "creditcard") { }
 
         public QueueMessage QueueMessage { get { return QueueMessage.CreditCardMessage; } }
 
         public bool Publish(string jsonContent)
         {
-            ConnectToRabbitMQ();
+            Connect();
 
             try
             {
@@ -28,7 +27,7 @@ namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error trying to publish message to the {_queue}. Body: {jsonContent}. ErrorMessage: {ex.Message}");
+                _logger.LogError($"Error trying to publish message to Exchange: {_exchange}. Body: {jsonContent}. ErrorMessage: {ex.Message}");
             }
 
             return false;
