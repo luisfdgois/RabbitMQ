@@ -12,12 +12,14 @@ namespace CreditCard.RabbitMQ.Consumer
         private IModel _channel;
 
         private readonly string _queueName = "creditcard-queue";
+        private readonly string _exchangeName = "order-exchange";
+        private readonly string _routingKey = "creditcard";
 
         public QueueConsumer(IConnection connection)
         {
             _connection = connection;
 
-            ConnectToRabbitMQ();
+            Connect();
         }
 
         public void Consume()
@@ -34,7 +36,7 @@ namespace CreditCard.RabbitMQ.Consumer
 
                     var message = JsonSerializer.Deserialize<CreditCardMessage>(content);
 
-                    await OnMessage(this, new QueueConsumerEventArgs(message));
+                    await OnMessage(this, new QueueConsumerEventArgs(message!));
 
                     _channel.BasicAck(eventArgs.DeliveryTag, false);
                 }
@@ -51,11 +53,13 @@ namespace CreditCard.RabbitMQ.Consumer
 
         public event AsyncEventHandler<QueueConsumerEventArgs> OnMessage;
 
-        private void ConnectToRabbitMQ()
+        private void Connect()
         {
             _channel = _connection.CreateModel();
 
-            _channel.QueueDeclare(queue: "creditcard-queue", durable: true, exclusive: false, autoDelete: false);
+            _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
+
+            _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
         }
 
         public void Dispose()
