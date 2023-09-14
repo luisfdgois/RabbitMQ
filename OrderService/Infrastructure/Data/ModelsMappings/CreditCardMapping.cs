@@ -11,11 +11,13 @@ namespace Infrastructure.Data.ModelsMappings
             builder.ToTable(nameof(CreditCard));
 
             builder.Property(c => c.Number)
-                   .HasColumnType("VARCHAR(20)")
+                   .HasMaxLength(20)
+                   .IsUnicode(false)
                    .IsRequired();
 
             builder.Property(c => c.CVV)
-                   .HasColumnType("VARCHAR(3)")
+                   .HasMaxLength(3)
+                   .IsUnicode(false)
                    .IsRequired();
 
             builder.Property(c => c.NumberOfInstallment)

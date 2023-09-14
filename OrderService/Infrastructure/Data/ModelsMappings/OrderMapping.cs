@@ -12,15 +12,16 @@ namespace Infrastructure.Data.ModelsMappings
 
             builder.HasKey(o => o.Id);
 
-            builder.Property(o => o.CreationDate)
+            builder.Property(o => o.CreatedOn)
                    .IsRequired();
 
-            builder.Property(o => o.LastUpdateDate)
+            builder.Property(o => o.LastUpdate)
                    .IsRequired()
                    .ValueGeneratedOnUpdate();
 
             builder.Property(c => c.ProductDescription)
-                   .HasColumnType("VARCHAR(200)")
+                   .HasMaxLength(200)
+                   .IsUnicode(false)
                    .IsRequired();
 
             builder.Property(c => c.ProductValue)
@@ -31,7 +32,8 @@ namespace Infrastructure.Data.ModelsMappings
                    .IsRequired();
 
             builder.Property(o => o.UserEmail)
-                   .HasColumnType("VARCHAR(60)")
+                   .HasMaxLength(100)
+                   .IsUnicode(false)
                    .IsRequired();
         }
     }

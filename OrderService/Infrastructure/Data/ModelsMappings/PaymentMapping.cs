@@ -12,10 +12,10 @@ namespace Infrastructure.Data.ModelsMappings
 
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.CreationDate)
+            builder.Property(p => p.CreatedOn)
                    .IsRequired();
 
-            builder.Property(p => p.LastUpdateDate)
+            builder.Property(p => p.LastUpdate)
                    .IsRequired()
                    .ValueGeneratedOnUpdate();
 
