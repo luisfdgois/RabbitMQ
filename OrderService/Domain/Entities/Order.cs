@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System;
+
+namespace Domain.Entities
 {
     public class Order : Entity
     {
@@ -27,6 +29,7 @@
 
         public void UpdatePaymentStatus(bool approved)
         {
+            // Add a custom Exception
             if (Payment is null)
                 throw new NullReferenceException("Payment information not found.");
 
