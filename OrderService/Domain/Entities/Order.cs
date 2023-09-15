@@ -10,21 +10,15 @@ namespace Domain.Entities
         public string UserEmail { get; private set; }
         public Payment Payment { get; private set; }
 
-        private Order() { }
+        protected Order() { }
 
-        public Order(string productDescription, decimal productValue, int productQuantity, string userEmail)
+        public Order(string productDescription, decimal productValue, int productQuantity, string userEmail, Payment payment)
         {
             ProductDescription = productDescription;
             ProductValue = productValue;
             ProductQuantity = productQuantity;
             UserEmail = userEmail;
-        }
-
-        public Order AddPaymentMethod(Payment payment)
-        {
             Payment = payment;
-
-            return this;
         }
 
         public void UpdatePaymentStatus(bool approved)

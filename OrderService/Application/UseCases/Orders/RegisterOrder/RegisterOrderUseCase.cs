@@ -1,43 +1,48 @@
-﻿using Application.Shared.Helpers.Factories;
-using Application.UseCases.Models.Requests;
+﻿using Application.UseCases.Models.Requests;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Models.DTOs;
 using Domain.Repositories;
 using Domain.Services.Bus;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Application.UseCases.Orders.RegisterOrder
 {
     public class RegisterOrderUseCase : IRegisterOrderUseCase
     {
         private readonly IMapper _mapper;
-        private readonly IPaymentTypeFactory _paymentFactory;
-        private readonly IPublisherServiceBus _serviceBus;
+        private readonly IPublisherBus _publisherBus;
         private readonly IOrderRepository _repository;
+        private readonly ILogger<RegisterOrderUseCase> _logger;
 
-        public RegisterOrderUseCase(IMapper mapper, IPaymentTypeFactory paymentFactory,
-            IPublisherServiceBus serviceBus, IOrderRepository repository)
+        public RegisterOrderUseCase(IMapper mapper, IPublisherBus publisherBus, IOrderRepository repository, ILogger<RegisterOrderUseCase> logger)
         {
             _mapper = mapper;
-            _paymentFactory = paymentFactory;
-            _serviceBus = serviceBus;
+            _publisherBus = publisherBus;
             _repository = repository;
+            _logger = logger;
         }
 
         public async Task Execute(RegisterOrderDto dto)
         {
-            var order = _mapper.Map<Order>(dto);
+            try
+            {
+                var order = _mapper.Map<Order>(dto);
 
-            var payment = _paymentFactory.DeserializeJson(dto.PaymentType, dto.Payment.ToString());
-            order.AddPaymentMethod(payment);
+                await _repository.Add(order);
 
-            await _repository.Add(order);
+                var message = _mapper.Map<BusMessage>(order.Payment);
 
-            var busMessage = _mapper.Map<BusMessage>(order.Payment);
+                _publisherBus.Publish(message);
 
-            _serviceBus.Publish(busMessage);
-
-            await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "The order registration action could not be completed.");
+            }
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using Application.UseCases.Models.Requests;
+﻿using Application.Mapping.Extensions;
+using Application.UseCases.Models.Requests;
 using Application.UseCases.Models.Responses;
 using AutoMapper;
 using Domain.DTOs;
 using Domain.Entities;
 using Domain.Models.DTOs;
 
-namespace Application.Shared.Mapping
+namespace Application.Mapping
 {
     public class ApplicationMappers : Profile
     {
@@ -19,7 +20,7 @@ namespace Application.Shared.Mapping
         private void RequestDtoToDomain()
         {
             CreateMap<RegisterOrderDto, Order>()
-                .ForMember(dest => dest.Payment, opt => opt.Ignore());
+                .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment.CreatePaymentObject(src.PaymentType)));
         }
 
         private void DomainToDomainDto()
