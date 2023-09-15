@@ -1,4 +1,5 @@
 ﻿using Domain.Models.DTOs;
+using System;
 using System.Text.Json;
 
 namespace Domain.DTOs
