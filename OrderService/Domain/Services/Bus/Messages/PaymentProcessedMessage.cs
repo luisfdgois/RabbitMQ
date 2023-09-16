@@ -1,4 +1,4 @@
-﻿namespace Domain.Models.DTOs
+﻿namespace Domain.Services.Bus.Messages
 {
     public class PaymentProcessedMessage
     {
