@@ -1,4 +1,5 @@
-﻿using Domain.Models.DTOs;
+﻿using Domain.Services.Bus.Messages;
+using System;
 
 namespace Domain.Services.Bus
 {

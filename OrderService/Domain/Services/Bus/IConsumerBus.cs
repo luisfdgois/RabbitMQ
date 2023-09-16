@@ -1,8 +1,9 @@
 ﻿using RabbitMQ.Client.Events;
+using System;
 
 namespace Domain.Services.Bus
 {
-    public interface IConsumerServiceBus : IDisposable
+    public interface IConsumerBus : IDisposable
     {
         void Consume();
         
