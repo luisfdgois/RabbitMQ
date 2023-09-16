@@ -11,9 +11,9 @@ namespace Infrastructure.Background
     {
         private readonly ILogger<PaymentProcessedWorker> _logger;
         private readonly IServiceProvider _provider;
-        private readonly IConsumerServiceBus _consumer;
+        private readonly IConsumerBus _consumer;
 
-        public PaymentProcessedWorker(ILogger<PaymentProcessedWorker> logger, IServiceProvider provider, IConsumerServiceBus consumer)
+        public PaymentProcessedWorker(ILogger<PaymentProcessedWorker> logger, IServiceProvider provider, IConsumerBus consumer)
         {
             _logger = logger;
             _provider = provider;

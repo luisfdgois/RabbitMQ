@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-namespace Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete
+namespace Infrastructure.Services.Bus.Publishers.Strategies
 {
-    public abstract class PublisherQueueBase : IDisposable
+    public abstract class BaseStrategyPublisherBus : IDisposable
     {
-        protected readonly ILogger<PublisherQueueBase> _logger;
+        protected readonly ILogger<BaseStrategyPublisherBus> _logger;
         protected readonly IConnection _connection;
         protected IModel _channel;
 
         protected readonly string _routingKey;
         protected readonly string _exchange = "order-exchange";
 
-        protected PublisherQueueBase(IConnection connection, ILogger<PublisherQueueBase> logger, string routingKey)
+        protected BaseStrategyPublisherBus(IConnection connection, ILogger<BaseStrategyPublisherBus> logger, string routingKey)
         {
             _connection = connection;
             _logger = logger;

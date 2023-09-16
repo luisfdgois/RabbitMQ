@@ -1,12 +1,13 @@
 ﻿using Domain.Repositories;
 using Domain.Services.Bus;
+using Domain.Services.Bus.Messages;
 using Infrastructure.Background;
-using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Concrete;
-using Infrastructure.ComplementaryServices.RabbitMQ.Publishers.Contracts;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
-using Infrastructure.Services;
-using Infrastructure.Shared.Settings;
+using Infrastructure.Services.Bus.Consumers;
+using Infrastructure.Services.Bus.Publishers;
+using Infrastructure.Services.Bus.Publishers.Strategies;
+using Infrastructure.Services.Bus.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,15 +44,16 @@ namespace Infrastructure
         {
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
 
-            services.AddSingleton(serviceProvider =>
+            services.AddSingleton(_ =>
             {
                 var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) };
                 return connectionFactory.CreateConnection();
             });
 
-            services.AddScoped<IPublisherServiceBus, PublisherServiceBus>()
-                    .AddSingleton<IConsumerServiceBus, ConsumerServiceBus>()
-                    .AddScoped<IPublisherQueue, CreditCardQueue>();
+            services.AddScoped<IPublisherBus, PublisherBus>()
+                    .AddScoped<IStrategyPublisherBus, CreditCardBus>();
+
+            services.AddSingleton<IConsumerBus, ConsumerBus>();
 
             return services;
         }

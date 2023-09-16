@@ -1,22 +1,22 @@
-﻿using Domain.Models.DTOs;
-using Domain.Services.Bus;
+﻿using Domain.Services.Bus;
+using Domain.Services.Bus.Messages;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace Infrastructure.Services
+namespace Infrastructure.Services.Bus.Consumers
 {
-    public class ConsumerServiceBus : IConsumerServiceBus
+    public class ConsumerBus : IConsumerBus
     {
-        private readonly ILogger<ConsumerServiceBus> _logger;
+        private readonly ILogger<ConsumerBus> _logger;
         private readonly IConnection _connection;
         private IModel _channel;
 
         private readonly string _queueName = "paymentprocessed-queue";
 
-        public ConsumerServiceBus(ILogger<ConsumerServiceBus> logger, IConnection connection)
+        public ConsumerBus(ILogger<ConsumerBus> logger, IConnection connection)
         {
             _logger = logger;
             _connection = connection;
@@ -44,7 +44,7 @@ namespace Infrastructure.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
+                    _logger.LogError($"Error when trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
 
                     _channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: true);
                 }
