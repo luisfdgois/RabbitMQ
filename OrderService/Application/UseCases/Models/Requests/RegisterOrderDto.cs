@@ -1,4 +1,4 @@
-﻿using Domain.Models.Enums;
+﻿using Domain.Enums;
 using Newtonsoft.Json.Linq;
 
 namespace Application.UseCases.Models.Requests

@@ -1,10 +1,7 @@
-﻿using Application.Mapping.Extensions;
-using Application.UseCases.Models.Requests;
-using Application.UseCases.Models.Responses;
+﻿using Application.UseCases.Models.Responses;
 using AutoMapper;
-using Domain.DTOs;
 using Domain.Entities;
-using Domain.Models.DTOs;
+using Domain.Services.Bus.Messages;
 
 namespace Application.Mapping
 {
@@ -12,15 +9,8 @@ namespace Application.Mapping
     {
         public ApplicationMappers()
         {
-            RequestDtoToDomain();
             DomainToDomainDto();
             DomainToResponseDto();
-        }
-
-        private void RequestDtoToDomain()
-        {
-            CreateMap<RegisterOrderDto, Order>()
-                .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment.CreatePaymentObject(src.PaymentType)));
         }
 
         private void DomainToDomainDto()

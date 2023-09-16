@@ -1,12 +1,10 @@
-﻿using Application.UseCases.Models.Requests;
+﻿using Application.Mapping;
+using Application.UseCases.Models.Requests;
 using AutoMapper;
-using Domain.Entities;
-using Domain.Models.DTOs;
 using Domain.Repositories;
 using Domain.Services.Bus;
+using Domain.Services.Bus.Messages;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace Application.UseCases.Orders.RegisterOrder
 {
@@ -29,13 +27,13 @@ namespace Application.UseCases.Orders.RegisterOrder
         {
             try
             {
-                var order = _mapper.Map<Order>(dto);
+                var order = dto.MapToOrder();
 
                 await _repository.Add(order);
 
                 var message = _mapper.Map<BusMessage>(order.Payment);
 
-                _publisherBus.Publish(message);
+                await _publisherBus.Publish(message);
 
                 await _repository.SaveChangesAsync();
             }
