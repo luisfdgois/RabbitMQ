@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Exceptions;
+using System;
 
 namespace Domain.Entities
 {
@@ -10,6 +11,16 @@ namespace Domain.Entities
         public Order? Order { get; private set; }
 
         protected Payment() : base() { }
+
+        public void AssignOrder(Order order)
+        {
+            ArgumentNullException.ThrowIfNull(nameof(order));
+
+            if (Order is not null) throw new OrderAlreadyAssignedException();
+
+            OrderId = order.Id;
+            Order = order;
+        }
 
         public void UpdateStatus(bool approved)
         {

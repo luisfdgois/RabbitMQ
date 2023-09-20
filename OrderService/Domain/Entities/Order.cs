@@ -19,14 +19,12 @@ namespace Domain.Entities
             ProductQuantity = productQuantity;
             UserEmail = userEmail;
             Payment = payment;
+
+            Payment.AssignOrder(this);
         }
 
         public void UpdatePaymentStatus(bool approved)
         {
-            // Add a custom Exception
-            if (Payment is null)
-                throw new NullReferenceException("Payment information not found.");
-
             Payment.UpdateStatus(approved);
         }
     }
