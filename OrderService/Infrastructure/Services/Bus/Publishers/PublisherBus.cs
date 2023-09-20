@@ -14,13 +14,13 @@ namespace Infrastructure.Services.Bus.Publishers
             _publishers = publishers;
         }
 
-        public Task Publish(BusMessage busMessage)
+        public async Task Publish(BusMessage busMessage)
         {
             var bus = _publishers.SingleOrDefault(b => b.IsMatch(busMessage));
 
             if (bus is not object) throw new InvalidPublisherBusException();
 
-            return Task.FromResult(() => { bus.Publish(busMessage); });
+            await Task.Run(() => { bus.Publish(busMessage); });
         }
     }
 }
