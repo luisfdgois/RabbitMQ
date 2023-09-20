@@ -8,11 +8,13 @@ namespace CreditCard
     {
         private readonly IQueueConsumer _consumer;
         private readonly IQueuePublisher _publisher;
+        private readonly ILogger<Worker> _logger;
 
-        public Worker(IQueueConsumer consumer, IQueuePublisher publisher)
+        public Worker(IQueueConsumer consumer, IQueuePublisher publisher, ILogger<Worker> logger)
         {
             _consumer = consumer;
             _publisher = publisher;
+            _logger=logger;
 
             _consumer.OnMessage += OnMessageAsync;
         }
@@ -21,7 +23,7 @@ namespace CreditCard
         {
             _consumer.Consume();
 
-            Console.Write($"Worker running at: {DateTimeOffset.Now}");
+            _logger.LogInformation($"Worker running at: {DateTimeOffset.Now}");
 
             await Task.CompletedTask;
         }
@@ -30,7 +32,7 @@ namespace CreditCard
 
             await Task.Run(() =>
             {
-                Console.Write($"New Message. OrderId: {args.Message.OrderId}");
+                _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
 
                 CreditAnalysisService.Analyze(args.Message, out ProcessedCreditMessage processedCredit);
 

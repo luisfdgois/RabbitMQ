@@ -10,14 +10,16 @@ namespace CreditCard.RabbitMQ.Consumer
     {
         private readonly IConnection _connection;
         private IModel _channel;
+        private readonly ILogger<QueueConsumer> _logger;
 
         private readonly string _queueName = "creditcard-queue";
         private readonly string _exchangeName = "order-exchange";
         private readonly string _routingKey = "creditcard";
 
-        public QueueConsumer(IConnection connection)
+        public QueueConsumer(IConnection connection, ILogger<QueueConsumer> logger)
         {
             _connection = connection;
+            _logger = logger;
 
             Connect();
         }
@@ -42,7 +44,7 @@ namespace CreditCard.RabbitMQ.Consumer
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
+                    _logger.LogError($"Error trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
 
                     _channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: true);
                 }
@@ -58,6 +60,8 @@ namespace CreditCard.RabbitMQ.Consumer
             _channel = _connection.CreateModel();
 
             _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
+
+            _channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Direct);
 
             _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
         }
