@@ -6,7 +6,7 @@ namespace CreditCard
     {
         public static void Analyze(CreditCardMessage creditCard, out ProcessedCreditMessage processedCreditMessage)
         {
-            Task.Delay(5000);
+            Thread.Sleep(10000);
 
             processedCreditMessage = new ProcessedCreditMessage { OrderId = creditCard.OrderId, PaymentApproved = CreditApproved() };
         }

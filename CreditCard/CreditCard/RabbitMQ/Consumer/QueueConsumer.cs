@@ -26,6 +26,8 @@ namespace CreditCard.RabbitMQ.Consumer
 
         public void Consume()
         {
+            _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+
             var consumer = new EventingBasicConsumer(_channel);
 
             consumer.Received += async (model, eventArgs) =>
