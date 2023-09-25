@@ -12,6 +12,6 @@ namespace CreditCard
         }
 
         private static bool CreditApproved() =>
-            (new Random().Next(0, 1) is 1);
+            (new Random().Next(0, 2) is 1);
     }
 }
