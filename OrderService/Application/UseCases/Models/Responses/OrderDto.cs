@@ -8,6 +8,7 @@
         public decimal ProductValue { get; private set; }
         public int ProductQuantity { get; private set; }
         public string UserEmail { get; private set; }
-        public DateTime RegistrationDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastUpdate { get; private set; }
     }
 }

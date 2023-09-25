@@ -26,6 +26,8 @@ namespace Domain.Entities
         public void UpdatePaymentStatus(bool approved)
         {
             Payment.UpdateStatus(approved);
+
+            LastUpdate = DateTime.UtcNow;
         }
     }
 }

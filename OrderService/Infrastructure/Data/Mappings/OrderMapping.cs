@@ -16,8 +16,7 @@ namespace Infrastructure.Data.Mappings
                    .IsRequired();
 
             builder.Property(o => o.LastUpdate)
-                   .IsRequired()
-                   .ValueGeneratedOnUpdate();
+                   .IsRequired();
 
             builder.Property(c => c.ProductDescription)
                    .HasMaxLength(200)

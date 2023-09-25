@@ -1,16 +1,18 @@
-﻿using Domain.Exceptions;
-using System;
+﻿using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Domain.Entities
 {
     public class Payment : Entity
     {
-        public bool Approved { get; private set; }
-
         public Guid OrderId { get; private set; }
         public Order? Order { get; private set; }
+        public PaymentStatus Status { get; private set; }
 
-        protected Payment() : base() { }
+        protected Payment() : base()
+        {
+            Status = PaymentStatus.Pending;
+        }
 
         public void AssignOrder(Order order)
         {
@@ -24,7 +26,12 @@ namespace Domain.Entities
 
         public void UpdateStatus(bool approved)
         {
-            Approved = approved;
+            if (approved)
+                Status = PaymentStatus.Approved;
+            else
+                Status = PaymentStatus.Denied;
+
+            LastUpdate = DateTime.UtcNow;
         }
     }
 }

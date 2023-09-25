@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.Models.Responses;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Services.Bus.Messages;
 
 namespace Application.Mapping
@@ -24,8 +25,7 @@ namespace Application.Mapping
         private void DomainToResponseDto()
         {
             CreateMap<Order, OrderDto>()
-                .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(s => s.CreatedOn))
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(s => s.Payment.Approved));
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(s => s.Payment.Status == PaymentStatus.Approved ? true : false));
         }
     }
 }

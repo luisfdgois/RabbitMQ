@@ -69,6 +69,9 @@ namespace Infrastructure.Services.Bus.Consumers
         {
             _channel?.Close();
             _channel?.Dispose();
+
+            _connection.Close();
+            _connection.Dispose();
         }
     }
 }

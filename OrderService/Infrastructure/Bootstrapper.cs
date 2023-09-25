@@ -1,6 +1,5 @@
 ﻿using Domain.Repositories;
 using Domain.Services.Bus;
-using Domain.Services.Bus.Messages;
 using Infrastructure.Background;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
@@ -50,8 +49,8 @@ namespace Infrastructure
                 return connectionFactory.CreateConnection();
             });
 
-            services.AddScoped<IPublisherBus, PublisherBus>()
-                    .AddScoped<IStrategyPublisherBus, CreditCardBus>();
+            services.AddSingleton<IPublisherBus, PublisherBus>()
+                    .AddSingleton<IStrategyPublisherBus, CreditCardBus>();
 
             services.AddSingleton<IConsumerBus, ConsumerBus>();
 

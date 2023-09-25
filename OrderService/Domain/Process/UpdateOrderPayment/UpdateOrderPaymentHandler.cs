@@ -20,12 +20,14 @@ namespace Domain.Process.UpdateOrderPayment
             var order = await _repository.GetById(request.OrderId);
 
             if (order is null)
-                _logger.LogError($"It could not possible to find a Order with Key = {request.OrderId}");
+                _logger.LogError($"It could not possible to find an Order with Key = {request.OrderId}");
             else
             {
                 order.UpdatePaymentStatus(request.Approved);
 
                 await _repository.SaveChangesAsync();
+
+                _logger.LogInformation($"Order = {request.OrderId}. Paymente Result - Approved = {request.Approved}");
             }
 
             return await Task.FromResult(Unit.Value);

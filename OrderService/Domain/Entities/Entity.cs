@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public Guid Id { get; private set; }
         public DateTime CreatedOn { get; private set; }
-        public DateTime LastUpdate { get; private set; }
+        public DateTime LastUpdate { get; protected set; }
 
         public Entity()
         {

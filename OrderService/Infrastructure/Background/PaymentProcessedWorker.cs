@@ -33,8 +33,6 @@ namespace Infrastructure.Background
 
         private async Task UpdatedPaymentStatus(object sender, ConsumerBusEvent args)
         {
-            _logger.LogInformation($"Order: {args.Message.OrderId}. Updated with payment status = {args.Message.PaymentApproved}");
-
             using IServiceScope scope = _provider.CreateAsyncScope();
 
             var mediator = scope.ServiceProvider.GetService<IMediator>();

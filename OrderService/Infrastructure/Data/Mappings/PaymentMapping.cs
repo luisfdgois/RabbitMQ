@@ -16,8 +16,7 @@ namespace Infrastructure.Data.Mappings
                    .IsRequired();
 
             builder.Property(p => p.LastUpdate)
-                   .IsRequired()
-                   .ValueGeneratedOnUpdate();
+                   .IsRequired();
 
             builder.HasOne(p => p.Order)
                    .WithOne(o => o.Payment)

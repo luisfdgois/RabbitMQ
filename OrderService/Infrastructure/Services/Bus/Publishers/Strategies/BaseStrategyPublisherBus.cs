@@ -34,6 +34,9 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
         {
             _channel?.Close();
             _channel?.Dispose();
+
+            _connection.Close();
+            _connection.Dispose();
         }
     }
 }
