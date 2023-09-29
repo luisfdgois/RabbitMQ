@@ -1,8 +1,6 @@
-﻿using Domain.Repositories;
-using Domain.Services.Bus;
+﻿using Domain.Services.Bus;
 using Infrastructure.Background;
 using Infrastructure.Data;
-using Infrastructure.Data.Repositories;
 using Infrastructure.Services.Bus.Consumers;
 using Infrastructure.Services.Bus.Publishers;
 using Infrastructure.Services.Bus.Publishers.Strategies;
@@ -28,13 +26,6 @@ namespace Infrastructure
         public static IServiceCollection AddBackgroundService(this IServiceCollection services)
         {
             services.AddHostedService<PaymentProcessedWorker>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

@@ -1,5 +1,4 @@
-﻿using Application.UseCases.Models.Requests;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Application.UseCases.Orders.RegisterOrder
 {

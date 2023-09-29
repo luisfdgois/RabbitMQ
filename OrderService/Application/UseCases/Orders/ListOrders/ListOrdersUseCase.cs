@@ -1,23 +1,27 @@
-﻿using Application.UseCases.Models.Responses;
-using AutoMapper;
-using Domain.Repositories;
+﻿using Application.UseCases.DTOs;
+using Domain.Entities;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Orders.ListOrders
 {
     public class ListOrdersUseCase : IListOrdersUseCase
     {
-        private readonly IMapper _mapper;
-        private readonly IOrderRepository _repository;
+        private readonly DbContext _dbContext;
 
-        public ListOrdersUseCase(IMapper mapper, IOrderRepository repository)
+        public ListOrdersUseCase(OrderContext dbContext)
         {
-            _mapper = mapper;
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public async Task<List<OrderDto>> Execute()
         {
-            return _mapper.Map<List<OrderDto>>(await _repository.GetAll());
+            return await _dbContext.Set<Order>()
+                                   .Include(o => o.Payment)
+                                   .AsNoTrackingWithIdentityResolution()
+                                   .Select(o => new OrderDto(o.Id, o.Payment.Status, o.ProductDescription, o.ProductValue,
+                                                             o.ProductQuantity, o.UserEmail, o.CreatedOn, o.LastUpdate))
+                                   .ToListAsync();
         }
     }
 }

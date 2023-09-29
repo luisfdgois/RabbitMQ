@@ -1,23 +1,25 @@
-﻿using Domain.Repositories;
+﻿using Domain.Entities;
+using Infrastructure.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Domain.Process.UpdateOrderPayment
 {
     public class UpdateOrderPaymentHandler : IRequestHandler<UpdateOrderPaymentCommand>
     {
-        private readonly IOrderRepository _repository;
+        private readonly DbContext _dbContext;
         private readonly ILogger<UpdateOrderPaymentHandler> _logger;
 
-        public UpdateOrderPaymentHandler(IOrderRepository repository, ILogger<UpdateOrderPaymentHandler> logger)
+        public UpdateOrderPaymentHandler(OrderContext dbContext, ILogger<UpdateOrderPaymentHandler> logger)
         {
-            _repository = repository;
+            _dbContext = dbContext;
             _logger = logger;
         }
 
         public async Task<Unit> Handle(UpdateOrderPaymentCommand request, CancellationToken cancellationToken)
         {
-            var order = await _repository.GetById(request.OrderId);
+            var order = await _dbContext.Set<Order>().FirstOrDefaultAsync(o => o.Id.Equals(request.OrderId), cancellationToken);
 
             if (order is null)
                 _logger.LogError($"It could not possible to find an Order with Key = {request.OrderId}");
@@ -25,7 +27,7 @@ namespace Domain.Process.UpdateOrderPayment
             {
                 order.UpdatePaymentStatus(request.Approved);
 
-                await _repository.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 _logger.LogInformation($"Order = {request.OrderId}. Paymente Result - Approved = {request.Approved}");
             }

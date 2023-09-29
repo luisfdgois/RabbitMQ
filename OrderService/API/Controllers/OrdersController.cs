@@ -1,5 +1,4 @@
-﻿using Application.UseCases.Models.Requests;
-using Application.UseCases.Orders.ListOrders;
+﻿using Application.UseCases.Orders.ListOrders;
 using Application.UseCases.Orders.RegisterOrder;
 using Microsoft.AspNetCore.Mvc;
 

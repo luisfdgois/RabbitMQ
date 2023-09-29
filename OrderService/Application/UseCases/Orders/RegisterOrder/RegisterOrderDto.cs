@@ -1,7 +1,7 @@
 ﻿using Domain.Enums;
 using Newtonsoft.Json.Linq;
 
-namespace Application.UseCases.Models.Requests
+namespace Application.UseCases.Orders.RegisterOrder
 {
     public class RegisterOrderDto
     {

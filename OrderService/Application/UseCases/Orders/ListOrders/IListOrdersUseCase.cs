@@ -1,4 +1,4 @@
-﻿using Application.UseCases.Models.Responses;
+﻿using Application.UseCases.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

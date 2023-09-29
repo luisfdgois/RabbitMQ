@@ -1,9 +1,9 @@
 ﻿using Application.Mapping;
-using Application.UseCases.Models.Requests;
 using AutoMapper;
-using Domain.Repositories;
 using Domain.Services.Bus;
 using Domain.Services.Bus.Messages;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Orders.RegisterOrder
@@ -12,14 +12,14 @@ namespace Application.UseCases.Orders.RegisterOrder
     {
         private readonly IMapper _mapper;
         private readonly IPublisherBus _publisherBus;
-        private readonly IOrderRepository _repository;
+        private readonly DbContext _dbContext;
         private readonly ILogger<RegisterOrderUseCase> _logger;
 
-        public RegisterOrderUseCase(IMapper mapper, IPublisherBus publisherBus, IOrderRepository repository, ILogger<RegisterOrderUseCase> logger)
+        public RegisterOrderUseCase(IMapper mapper, IPublisherBus publisherBus, OrderContext dbContex, ILogger<RegisterOrderUseCase> logger)
         {
             _mapper = mapper;
             _publisherBus = publisherBus;
-            _repository = repository;
+            _dbContext = dbContex;
             _logger = logger;
         }
 
@@ -27,13 +27,13 @@ namespace Application.UseCases.Orders.RegisterOrder
         {
             try
             {
-                var order = dto.MapToOrder();
+                var order = dto.MapToDomainEntity();
 
-                await _repository.Add(order);
+                await _dbContext.AddAsync(order);
+
+                await _dbContext.SaveChangesAsync();
 
                 var message = _mapper.Map<BusMessage>(order.Payment);
-
-                await _repository.SaveChangesAsync();
 
                 await _publisherBus.Publish(message);
             }

@@ -21,7 +21,6 @@ builder.Services.AddDomainProcess();
 
 builder.Services.AddApplicationServices()
                 .AddOrderContext(configuration)
-                .AddRepositories()
                 .AddInfrestructureServices(configuration)
                 .AddBackgroundService();
 
