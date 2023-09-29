@@ -19,8 +19,6 @@ namespace Domain.Entities
             ProductQuantity = productQuantity;
             UserEmail = userEmail;
             Payment = payment;
-
-            Payment.AssignOrder(this);
         }
 
         public void UpdatePaymentStatus(bool approved)

@@ -10,20 +10,14 @@ namespace Application.Factories
     {
         public static Payment ConvertToPaymentObject(this JObject jObject, PaymentType paymentType)
         {
-            var func = GetDeserializationFunctionByPaymentType(paymentType);
+            var type = Type.GetType($"Domain.Entities.{paymentType}, Domain");
 
-            return func.Invoke(jObject.ToString());
-        }
+            if (type is null)
+                throw new InvalidPaymentTypeConversionException();
 
-        private static Func<string, Payment> GetDeserializationFunctionByPaymentType(PaymentType paymentType)
-        {
-            return paymentType switch
-            {
-                PaymentType.CreditCard => _deserialize<CreditCard>,
-                _ => throw new InvalidPaymentTypeConversionException()
-            };
+            var paymentObject = (Payment)JsonSerializer.Deserialize(jObject.ToString(), type)!;
 
-            T _deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json);
+            return paymentObject;
         }
     }
 }

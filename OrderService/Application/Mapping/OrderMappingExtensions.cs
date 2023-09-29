@@ -1,12 +1,12 @@
 ﻿using Application.Factories;
-using Application.UseCases.Models.Requests;
+using Application.UseCases.Orders.RegisterOrder;
 using Domain.Entities;
 
 namespace Application.Mapping
 {
     public static class OrderMappingExtensions
     {
-        public static Order MapToOrder(this RegisterOrderDto dto)
+        public static Order MapToDomainEntity(this RegisterOrderDto dto)
         {
             var payment = dto.Payment.ConvertToPaymentObject(dto.PaymentType);
 

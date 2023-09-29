@@ -1,7 +1,5 @@
-﻿using Application.UseCases.Models.Responses;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
-using Domain.Enums;
 using Domain.Services.Bus.Messages;
 
 namespace Application.Mapping
@@ -11,7 +9,6 @@ namespace Application.Mapping
         public ApplicationMappers()
         {
             DomainToDomainDto();
-            DomainToResponseDto();
         }
 
         private void DomainToDomainDto()
@@ -20,12 +17,6 @@ namespace Application.Mapping
 
             CreateMap<Payment, BusMessage>()
                 .Include(typeof(CreditCard), typeof(CreditCardMessage));
-        }
-
-        private void DomainToResponseDto()
-        {
-            CreateMap<Order, OrderDto>()
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(s => s.Payment.Status == PaymentStatus.Approved ? true : false));
         }
     }
 }
