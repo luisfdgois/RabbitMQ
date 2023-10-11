@@ -1,0 +1,59 @@
+version: '3.4'
+
+services: 
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - 15672:15672
+            - 5672:5672
+            - 25676:25676
+
+    db-orderservice:
+        container_name: db-orderservice
+        image: postgres:latest
+        ports: 
+            - 5432:5432
+        environment:
+            POSTGRES_DB: OrderServiceDB
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: passpostgres
+        volumes:
+            - db-orderservice:/var/lib/postgresql/data
+            - ./scripts/dbscript.sql:/docker-entrypoint-initdb.d/dbscript.sql
+
+    api:
+        container_name: api-orderservice
+        image: ${DOCKER_REGISTRY-}api
+        ports: 
+            - 44335:80
+        build: 
+            context: OrderService
+            dockerfile: API/Dockerfile
+        restart: always
+        depends_on: 
+            - db-orderservice
+            - rabbitmq
+        environment: 
+            ASPNETCORE_ENVIRONMENT: Development
+            DBServer: db-orderservice
+            DBPort: 5432
+            DBUser: postgres
+            DBPassword: passpostgres
+            DataBase: OrderServiceDB
+
+    service-creditcard: 
+        container_name: service-creditcard
+        image: ${DOCKER_REGISTRY-}creditcard
+        build: 
+            context: CreditCard
+            dockerfile: CreditCard/Dockerfile
+        restart: always
+        environment: 
+            DOTNET_ENVIRONMENT: Development
+        depends_on: 
+            - rabbitmq
+
+volumes:
+    db-orderservice:
