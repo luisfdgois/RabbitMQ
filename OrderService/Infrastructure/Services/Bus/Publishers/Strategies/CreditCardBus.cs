@@ -3,6 +3,7 @@ using Domain.Services.Bus.Messages;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
+using System.Text.Json;
 
 namespace Infrastructure.Services.Bus.Publishers.Strategies
 {
@@ -19,7 +20,7 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
         {
             if (!IsMatch(message)) throw new IncompatiblePublisherBusException(nameof(CreditCardMessage));
 
-            var content = message.ToJson();
+            var content = JsonSerializer.Serialize(message); 
 
             try
             {
