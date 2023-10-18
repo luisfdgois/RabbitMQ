@@ -1,10 +1,14 @@
-﻿using Domain.Services.Bus;
+﻿using System.Runtime.ConstrainedExecution;
+using Domain.Services.Bus;
+using Domain.Services.Bus.Messages;
 using Infrastructure.Background;
 using Infrastructure.Data;
 using Infrastructure.Services.Bus.Consumers;
 using Infrastructure.Services.Bus.Publishers;
 using Infrastructure.Services.Bus.Publishers.Strategies;
 using Infrastructure.Services.Bus.Settings;
+using MassTransit;
+using MassTransit.RabbitMqTransport.Topology;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +42,15 @@ namespace Infrastructure
             {
                 var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) };
                 return connectionFactory.CreateConnection();
+            });
+
+            services.AddMassTransit(registration =>
+            {
+                registration.UsingRabbitMq((context, config) =>
+                {
+                    config.Host(new Uri(rabbitMQProperties.Uri));
+                    config.ConfigureEndpoints(context);
+                });
             });
 
             services.AddSingleton<IPublisherBus, PublisherBus>()

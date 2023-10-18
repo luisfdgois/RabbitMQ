@@ -1,42 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
+﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Services.Bus.Publishers.Strategies
 {
-    public abstract class BaseStrategyPublisherBus : IDisposable
+    public abstract class BaseStrategyPublisherBus
     {
+        protected readonly IBus _bus;
         protected readonly ILogger<BaseStrategyPublisherBus> _logger;
-        protected readonly IConnection _connection;
-        protected IModel _channel;
 
-        protected readonly string _routingKey;
-        protected readonly string _exchange = "order-exchange";
+        protected readonly string _queue = "queue-creditcard";
 
-        protected BaseStrategyPublisherBus(IConnection connection, ILogger<BaseStrategyPublisherBus> logger, string routingKey)
+        protected BaseStrategyPublisherBus(IBus bus, ILogger<BaseStrategyPublisherBus> logger)
         {
-            _connection = connection;
+            _bus = bus;
             _logger = logger;
-
-            _routingKey = routingKey;
-        }
-
-        protected void Connect()
-        {
-            if (_channel is object && _channel.IsOpen)
-                return;
-
-            _channel = _connection.CreateModel();
-
-            _channel.ExchangeDeclare(exchange: _exchange, type: ExchangeType.Direct);
-        }
-
-        public void Dispose()
-        {
-            _channel?.Close();
-            _channel?.Dispose();
-
-            _connection.Close();
-            _connection.Dispose();
         }
     }
 }

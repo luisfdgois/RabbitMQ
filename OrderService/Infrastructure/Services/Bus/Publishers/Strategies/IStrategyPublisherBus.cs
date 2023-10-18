@@ -10,6 +10,6 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
         /// <param name="message"></param>
         /// <returns></returns>
         bool IsMatch(BusMessage message);
-        bool Publish(BusMessage message);
+        Task<bool> Publish(BusMessage message);
     }
 }

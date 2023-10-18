@@ -20,7 +20,7 @@ namespace Infrastructure.Services.Bus.Publishers
 
             if (bus is not object) throw new InvalidPublisherBusException();
 
-            await Task.Run(() => { bus.Publish(busMessage); });
+            await bus.Publish(busMessage);
         }
     }
 }
