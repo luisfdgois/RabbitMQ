@@ -6,6 +6,6 @@
         public string Number { get; init; } = null!;
         public string CVV { get; init; } = null!;
         public int NumberOfInstallment { get; init; }
-        public decimal ValuePerInstallment { get; init; }
+        public string ValuePerInstallment { get; init; }
     }
 }

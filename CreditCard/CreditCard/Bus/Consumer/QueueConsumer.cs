@@ -13,8 +13,6 @@ namespace CreditCard.Bus.Consumer
         private readonly ILogger<QueueConsumer> _logger;
 
         private readonly string _queueName = "queue-creditcard";
-        private readonly string _exchangeName = "order-exchange";
-        private readonly string _routingKey = "creditcard";
 
         public QueueConsumer(IConnection connection, ILogger<QueueConsumer> logger)
         {
@@ -38,7 +36,10 @@ namespace CreditCard.Bus.Consumer
                 {
                     content = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
 
-                    var message = JsonSerializer.Deserialize<CreditCardMessage>(content);
+                    var jsonDocument = JsonDocument.Parse(content);
+                    jsonDocument.RootElement.TryGetProperty("message", out var jsonMessage);
+
+                    var message = JsonSerializer.Deserialize<CreditCardMessage>(jsonMessage.GetRawText(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                     await OnMessage(this, new QueueConsumerEventArgs(message!));
 
@@ -62,10 +63,6 @@ namespace CreditCard.Bus.Consumer
             _channel = _connection.CreateModel();
 
             _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
-
-            _channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Fanout);
-
-            _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
         }
 
         public void Dispose()
