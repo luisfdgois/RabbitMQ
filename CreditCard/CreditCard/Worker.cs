@@ -1,6 +1,6 @@
 using CreditCard.Models;
-using CreditCard.RabbitMQ.Consumer;
-using CreditCard.RabbitMQ.Publisher;
+using CreditCard.Bus.Consumer;
+using CreditCard.Bus.Publisher;
 
 namespace CreditCard
 {
@@ -14,7 +14,7 @@ namespace CreditCard
         {
             _consumer = consumer;
             _publisher = publisher;
-            _logger=logger;
+            _logger = logger;
 
             _consumer.OnMessage += OnMessageAsync;
         }

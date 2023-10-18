@@ -4,7 +4,7 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace CreditCard.RabbitMQ.Consumer
+namespace CreditCard.Bus.Consumer
 {
     public class QueueConsumer : IQueueConsumer
     {
@@ -12,7 +12,7 @@ namespace CreditCard.RabbitMQ.Consumer
         private IModel _channel;
         private readonly ILogger<QueueConsumer> _logger;
 
-        private readonly string _queueName = "creditcard-queue";
+        private readonly string _queueName = "queue-creditcard";
         private readonly string _exchangeName = "order-exchange";
         private readonly string _routingKey = "creditcard";
 
@@ -63,7 +63,7 @@ namespace CreditCard.RabbitMQ.Consumer
 
             _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
 
-            _channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Direct);
+            _channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Fanout);
 
             _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
         }

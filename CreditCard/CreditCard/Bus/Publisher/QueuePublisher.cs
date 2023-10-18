@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-namespace CreditCard.RabbitMQ.Publisher
+namespace CreditCard.Bus.Publisher
 {
     public class QueuePublisher : IQueuePublisher
     {

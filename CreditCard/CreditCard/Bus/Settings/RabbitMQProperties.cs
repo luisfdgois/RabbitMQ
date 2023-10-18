@@ -1,4 +1,4 @@
-﻿namespace CreditCard.RabbitMQ.Settings
+﻿namespace CreditCard.Bus.Settings
 {
     public record RabbitMQProperties
     {

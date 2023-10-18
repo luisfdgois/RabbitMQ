@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client.Events;
 
-namespace CreditCard.RabbitMQ.Consumer
+namespace CreditCard.Bus.Consumer
 {
     public interface IQueueConsumer : IDisposable
     {

@@ -1,6 +1,6 @@
-﻿using CreditCard.RabbitMQ.Consumer;
-using CreditCard.RabbitMQ.Publisher;
-using CreditCard.RabbitMQ.Settings;
+﻿using CreditCard.Bus.Consumer;
+using CreditCard.Bus.Publisher;
+using CreditCard.Bus.Settings;
 using RabbitMQ.Client;
 
 namespace CreditCard

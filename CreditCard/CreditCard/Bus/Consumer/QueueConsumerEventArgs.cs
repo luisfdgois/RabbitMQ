@@ -1,6 +1,6 @@
 ﻿using CreditCard.Models;
 
-namespace CreditCard.RabbitMQ.Consumer
+namespace CreditCard.Bus.Consumer
 {
     public class QueueConsumerEventArgs : EventArgs
     {
