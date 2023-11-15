@@ -1,12 +1,12 @@
-﻿using CreditCard.Models;
+﻿using Messages;
 
 namespace CreditCard.Bus.Consumer
 {
     public class QueueConsumerEventArgs : EventArgs
     {
-        public CreditCardMessage Message { get; }
+        public CreditRequestedMessage Message { get; }
 
-        public QueueConsumerEventArgs(CreditCardMessage message)
+        public QueueConsumerEventArgs(CreditRequestedMessage message)
         {
             Message = message;
         }

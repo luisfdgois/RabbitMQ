@@ -2,10 +2,9 @@
 
 namespace CreditCard.Bus.Consumer
 {
-    public interface IQueueConsumer : IDisposable
+    public interface IConsumerBus : IDisposable
     {
         void Consume();
-
         event AsyncEventHandler<QueueConsumerEventArgs> OnMessage;
     }
 }

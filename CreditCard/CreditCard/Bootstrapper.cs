@@ -1,7 +1,6 @@
 ﻿using CreditCard.Bus.Consumer;
-using CreditCard.Bus.Publisher;
 using CreditCard.Bus.Settings;
-using RabbitMQ.Client;
+using MassTransit;
 
 namespace CreditCard
 {
@@ -11,15 +10,22 @@ namespace CreditCard
         {
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
 
-            services.AddTransient<IQueueConsumer, QueueConsumer>()
-                    .AddTransient<IQueuePublisher, QueuePublisher>()
-                    .AddTransient(serviceProvider =>
-                    {
-                        var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties!.Uri) };
-                        connectionFactory.ClientProvidedName = "app:CreditCard-Service";
+            services.AddMassTransit(configure =>
+            {
+                configure.SetKebabCaseEndpointNameFormatter();
 
-                        return connectionFactory.CreateConnection();
-                    });
+                configure.AddConsumer<ConsumerBus>()
+                         .Endpoint(endpoint => {
+                            endpoint.Name = "creditcard-queue";
+                            //endpoint.PrefetchCount = 1;
+                         });
+
+                configure.UsingRabbitMq((context, config) =>
+                {
+                    config.Host(new Uri(rabbitMQProperties!.Uri));
+                    config.ConfigureEndpoints(context);
+                });
+            });
 
             return services;
         }

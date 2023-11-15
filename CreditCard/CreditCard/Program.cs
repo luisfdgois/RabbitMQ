@@ -1,14 +1,12 @@
 using CreditCard;
+using Microsoft.AspNetCore.Builder;
 
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((context, services) =>
-    {
-        var configuration = context.Configuration;
+var builder = WebApplication.CreateBuilder(args);
 
-        services.AddHostedService<Worker>();
+var configuration = builder.Configuration;
 
-        services.ConfigureConsumerServices(configuration);
-    })
-    .Build();
+builder.Services.ConfigureConsumerServices(configuration);
 
-await host.RunAsync();
+var app = builder.Build();
+
+await app.RunAsync();

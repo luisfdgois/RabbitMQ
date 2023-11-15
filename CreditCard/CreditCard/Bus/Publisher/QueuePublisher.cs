@@ -11,12 +11,12 @@ namespace CreditCard.Bus.Publisher
         private readonly string _queue = "paymentprocessed-queue";
         private readonly string _exchange = "paymentprocessed-exchange";
 
-        public QueuePublisher(IConnection connection)
-        {
-            _connection = connection;
+        // public QueuePublisher(IConnection connection)
+        // {
+        //     _connection = connection;
 
-            ConnectToRabbitMQ();
-        }
+        //     ConnectToRabbitMQ();
+        // }
 
         public bool Publish(string message)
         {
