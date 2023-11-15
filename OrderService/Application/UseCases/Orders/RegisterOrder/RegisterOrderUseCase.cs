@@ -1,8 +1,8 @@
 ﻿using Application.Mapping;
 using AutoMapper;
 using Domain.Services.Bus;
-using Domain.Services.Bus.Messages;
 using Infrastructure.Data;
+using Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

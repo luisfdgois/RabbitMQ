@@ -1,7 +1,7 @@
 ﻿using Domain.Exceptions;
 using Domain.Services.Bus;
-using Domain.Services.Bus.Messages;
 using Infrastructure.Services.Bus.Publishers.Strategies;
+using Messages;
 
 namespace Infrastructure.Services.Bus.Publishers
 {

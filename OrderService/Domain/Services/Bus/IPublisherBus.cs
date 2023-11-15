@@ -1,4 +1,4 @@
-﻿using Domain.Services.Bus.Messages;
+﻿using Messages;
 
 namespace Domain.Services.Bus
 {

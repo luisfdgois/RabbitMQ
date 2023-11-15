@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Domain.Services.Bus.Messages;
+using Messages;
 
 namespace Application.Mapping
 {
@@ -13,10 +13,10 @@ namespace Application.Mapping
 
         private void DomainToDomainDto()
         {
-            CreateMap<CreditCard, CreditCardMessage>();
+            CreateMap<CreditCard, CreditRequestedMessage>();
 
             CreateMap<Payment, BusMessage>()
-                .Include(typeof(CreditCard), typeof(CreditCardMessage));
+                .Include(typeof(CreditCard), typeof(CreditRequestedMessage));
         }
     }
 }

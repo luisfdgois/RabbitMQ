@@ -1,6 +1,6 @@
 ﻿using Domain.Exceptions;
-using Domain.Services.Bus.Messages;
 using MassTransit;
+using Messages;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
@@ -12,16 +12,16 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
 
         public bool IsMatch(BusMessage message)
         {
-            return message is CreditCardMessage;
+            return message is CreditRequestedMessage;
         }
 
         public async Task<bool> Publish(BusMessage message)
         {
-            if (message is not CreditCardMessage creditcardMessage) throw new IncompatiblePublisherBusException(nameof(CreditCardMessage));
+            if (message is not CreditRequestedMessage creditcardMessage) throw new IncompatiblePublisherBusException(nameof(CreditRequestedMessage));
 
             try
             {
-                var endpoint = await _bus.GetSendEndpoint(new Uri($"queue:{_queue}?"));
+                var endpoint = await _bus.GetSendEndpoint(new Uri($"queue:{_queue}"));
 
                 await endpoint.Send(creditcardMessage, context => context.Durable = true);
 

@@ -1,4 +1,4 @@
-﻿using Application.UseCases.DTOs;
+﻿using Application.UseCases.Orders.DTOs;
 using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿using Application.UseCases.DTOs;
+﻿using Application.UseCases.Orders.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
