@@ -1,5 +1,6 @@
 ﻿using Application.UseCases.Orders.ListOrders;
 using Application.UseCases.Orders.RegisterOrder;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -13,6 +14,8 @@ namespace Application
 
             services.AddScoped<IRegisterOrderUseCase, RegisterOrderUseCase>();
             services.AddScoped<IListOrdersUseCase, ListOrdersUseCase>();
+
+            services.AddMediatR((typeof(Bootstrapper).Assembly));
 
             return services;
         }

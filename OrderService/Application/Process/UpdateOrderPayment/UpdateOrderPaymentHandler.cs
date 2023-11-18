@@ -19,7 +19,7 @@ namespace Domain.Process.UpdateOrderPayment
 
         public async Task<Unit> Handle(UpdateOrderPaymentCommand request, CancellationToken cancellationToken)
         {
-            var order = await _dbContext.Set<Order>().FirstOrDefaultAsync(o => o.Id.Equals(request.OrderId), cancellationToken);
+            var order = await _dbContext.Set<Order>().Include(o => o.Payment).FirstOrDefaultAsync(o => o.Id.Equals(request.OrderId), cancellationToken);
 
             if (order is null)
                 _logger.LogError($"It could not possible to find an Order with Key = {request.OrderId}");

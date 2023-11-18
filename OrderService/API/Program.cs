@@ -21,8 +21,7 @@ builder.Services.AddDomainProcess();
 
 builder.Services.AddApplicationServices()
                 .AddOrderContext(configuration)
-                .AddInfrestructureServices(configuration)
-                .AddBackgroundService();
+                .AddInfrestructureServices(configuration);
 
 var app = builder.Build();
 

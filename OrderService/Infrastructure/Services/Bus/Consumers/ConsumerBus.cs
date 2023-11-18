@@ -1,77 +1,39 @@
-﻿using Domain.Services.Bus;
-using Domain.Services.Bus.Messages;
+﻿using Domain.Process.UpdateOrderPayment;
+using MassTransit;
+using MediatR;
+using Messages;
 using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System.Text;
 using System.Text.Json;
 
 namespace Infrastructure.Services.Bus.Consumers
 {
-    public class ConsumerBus : IConsumerBus
+    public class ConsumerBus : IConsumer<PaymentProcessedMessage>
     {
+        private readonly IMediator _mediator;
         private readonly ILogger<ConsumerBus> _logger;
-        private readonly IConnection _connection;
-        private IModel _channel;
 
-        private readonly string _queueName = "paymentprocessed-queue";
-
-        public ConsumerBus(ILogger<ConsumerBus> logger, IConnection connection)
+        public ConsumerBus(ILogger<ConsumerBus> logger, IMediator mediator)
         {
             _logger = logger;
-            _connection = connection;
+            _mediator = mediator;
         }
 
-        public void Consume()
+        public async Task Consume(ConsumeContext<PaymentProcessedMessage> context)
         {
-            ConnectToRabbitMQ();
+            PaymentProcessedMessage message = null!;
 
-            var consumer = new EventingBasicConsumer(_channel);
-
-            consumer.Received += async (model, eventArgs) =>
+            try
             {
-                var content = string.Empty;
+                message = context.Message;
 
-                try
-                {
-                    content = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
+                var command = new UpdateOrderPaymentCommand(message.OrderId, message.PaymentApproved);
 
-                    var message = JsonSerializer.Deserialize<PaymentProcessedMessage>(content);
-
-                    await OnMessage(this, new ConsumerBusEvent(message));
-
-                    _channel.BasicAck(eventArgs.DeliveryTag, false);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Error when trying to process the message. Content: {content}. ErrorMessage: {ex?.Message}");
-
-                    _channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: true);
-                }
-            };
-
-            _channel.BasicConsume(queue: _queueName, autoAck: false, consumer: consumer);
-        }
-
-        public event AsyncEventHandler<ConsumerBusEvent> OnMessage;
-
-        private void ConnectToRabbitMQ()
-        {
-            if (_channel is object && _channel.IsOpen)
-                return;
-
-            _channel = _connection.CreateModel();
-
-            _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
-        }
-
-        public void Dispose()
-        {
-            _channel?.Close();
-            _channel?.Dispose();
-
-            _connection.Close();
-            _connection.Dispose();
+                await _mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error trying to process the message. Content: {JsonSerializer.Serialize(message)}. ErrorMessage: {ex?.Message}");
+            }
         }
     }
 }
