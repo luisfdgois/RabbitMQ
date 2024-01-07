@@ -13,16 +13,16 @@ CREATE TABLE "Order" (
     "ProductQuantity" integer NOT NULL,
     "UserEmail" character varying(100) NOT NULL,
     "CreatedOn" timestamp with time zone NOT NULL,
-    "LastUpdate" timestamp with time zone NOT NULL,
+    "UpdatedOn" timestamp with time zone NOT NULL,
     CONSTRAINT "PK_Order" PRIMARY KEY ("Id")
 );
 
 CREATE TABLE "Payment" (
     "Id" uuid NOT NULL,
-    "Approved" boolean NOT NULL,
     "OrderId" uuid NOT NULL,
+    "Status" integer NOT NULL,
     "CreatedOn" timestamp with time zone NOT NULL,
-    "LastUpdate" timestamp with time zone NOT NULL,
+    "UpdatedOn" timestamp with time zone NOT NULL,
     CONSTRAINT "PK_Payment" PRIMARY KEY ("Id"),
     CONSTRAINT "FK_Payment_Order_OrderId" FOREIGN KEY ("OrderId") REFERENCES "Order" ("Id") ON DELETE CASCADE
 );
@@ -40,7 +40,7 @@ CREATE TABLE "CreditCard" (
 CREATE UNIQUE INDEX "IX_Payment_OrderId" ON "Payment" ("OrderId");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20230913235819_Initial', '6.0.5');
+VALUES ('20240106202619_Initial', '6.0.5');
 
 COMMIT;
 

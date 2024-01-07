@@ -1,12 +1,11 @@
-﻿using System;
-
+﻿
 namespace Domain.Entities
 {
     public class Entity
     {
         public Guid Id { get; private set; }
         public DateTime CreatedOn { get; private set; }
-        public DateTime LastUpdate { get; protected set; }
+        public DateTime UpdatedOn { get; protected set; }
 
         public Entity()
         {

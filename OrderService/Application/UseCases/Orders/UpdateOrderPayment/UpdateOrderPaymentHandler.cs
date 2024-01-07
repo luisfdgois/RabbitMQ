@@ -1,10 +1,11 @@
 ﻿using Domain.Entities;
+using Domain.Process.UpdateOrderPayment;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Domain.Process.UpdateOrderPayment
+namespace Application.UseCases.Orders.UpdateOrderPayment
 {
     public class UpdateOrderPaymentHandler : IRequestHandler<UpdateOrderPaymentCommand>
     {

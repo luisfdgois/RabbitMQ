@@ -1,5 +1,4 @@
-﻿using Application.UseCases.Orders.DTOs;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,13 +13,13 @@ namespace Application.UseCases.Orders.ListOrders
             _dbContext = dbContext;
         }
 
-        public async Task<List<OrderDto>> Execute()
+        public async Task<List<ListOrdersDto>> Execute()
         {
             return await _dbContext.Set<Order>()
                                    .Include(o => o.Payment)
                                    .AsNoTrackingWithIdentityResolution()
-                                   .Select(o => new OrderDto(o.Id, o.Payment.Status, o.ProductDescription, o.ProductValue,
-                                                             o.ProductQuantity, o.UserEmail, o.CreatedOn, o.LastUpdate))
+                                   .Select(o => new ListOrdersDto(o.Id, o.Payment.Status, o.ProductDescription, o.ProductValue,
+                                                             o.ProductQuantity, o.UserEmail, o.CreatedOn, o.UpdatedOn))
                                    .ToListAsync();
         }
     }

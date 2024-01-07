@@ -20,7 +20,7 @@ namespace Domain.Entities
             else
                 Status = PaymentStatus.Denied;
 
-            LastUpdate = DateTime.UtcNow;
+            UpdatedOn = DateTime.UtcNow;
         }
     }
 }

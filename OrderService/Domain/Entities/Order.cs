@@ -25,7 +25,7 @@ namespace Domain.Entities
         {
             Payment.UpdateStatus(approved);
 
-            LastUpdate = DateTime.UtcNow;
+            UpdatedOn = DateTime.UtcNow;
         }
     }
 }
