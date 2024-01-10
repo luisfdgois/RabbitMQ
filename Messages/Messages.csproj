@@ -4,6 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageId>OrderPaymentService.Messages.LFDG</PackageId>
+    <Authors>Luis Fernando</Authors>
+    <RepositoryUrl>https://github.com/luisfdgois/Order-Payment-Service/tree/v2/Messages</RepositoryUrl>
+    <Title>Order Paymente Service Messages</Title>
   </PropertyGroup>
 
 </Project>

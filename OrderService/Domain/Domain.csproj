@@ -11,11 +11,8 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="OrderPaymentService.Messages.LFDG" Version="1.0.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Messages\Messages.csproj" />
   </ItemGroup>
 
 </Project>
