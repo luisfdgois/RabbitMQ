@@ -18,7 +18,7 @@ namespace Application.UseCases.Orders.UpdateOrderPayment
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(UpdateOrderPaymentCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateOrderPaymentCommand request, CancellationToken cancellationToken)
         {
             var order = await _dbContext.Set<Order>().Include(o => o.Payment).FirstOrDefaultAsync(o => o.Id.Equals(request.OrderId), cancellationToken);
 
@@ -32,8 +32,6 @@ namespace Application.UseCases.Orders.UpdateOrderPayment
 
                 _logger.LogInformation($"Order = {request.OrderId}. Paymente Result - Approved = {request.Approved}");
             }
-
-            return await Task.FromResult(Unit.Value);
         }
     }
 }

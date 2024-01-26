@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain
 {
@@ -8,7 +6,7 @@ namespace Domain
     {
         public static IServiceCollection AddDomainProcess(this IServiceCollection services)
         {
-            services.AddMediatR(config => config.AsScoped(), AppDomain.CurrentDomain.Load("Domain"));
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Boostrapper).Assembly));
 
             return services;
         }
