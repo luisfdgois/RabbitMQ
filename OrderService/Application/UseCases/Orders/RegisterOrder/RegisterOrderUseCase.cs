@@ -23,11 +23,11 @@ namespace Application.UseCases.Orders.RegisterOrder
             _logger = logger;
         }
 
-        public async Task Execute(RegisterOrderDto dto)
+        public async Task Execute(RegisterOrderRequest request)
         {
             try
             {
-                var order = dto.MapToDomainEntity();
+                var order = request.MapToDomainEntity();
 
                 await _dbContext.AddAsync(order);
 

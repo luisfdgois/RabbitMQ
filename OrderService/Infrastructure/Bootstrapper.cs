@@ -29,7 +29,8 @@ namespace Infrastructure
             services.AddMassTransit(registration =>
             {
                 registration.AddConsumer<ConsumerBus>()
-                            .Endpoint(endpoint => {
+                            .Endpoint(endpoint =>
+                            {
                                 endpoint.Name = "paymentprocessed-queue";
                             });
 

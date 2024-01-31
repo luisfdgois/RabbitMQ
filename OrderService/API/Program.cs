@@ -1,3 +1,5 @@
+using API.GraphQL.Mutations;
+using API.GraphQL.Queries;
 using Application;
 using Domain;
 using Infrastructure;
@@ -11,10 +13,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
+builder.Services.AddGraphQLServer()
+                .AddQueryType<OrderQuery>()
+                .AddMutationType<OrderMutation>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    options.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddDomainProcess();
@@ -39,5 +45,7 @@ app.UseRouting();
 app.UseCors();
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app.MapGraphQL();
 
 app.Run();

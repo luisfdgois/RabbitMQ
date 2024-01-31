@@ -25,6 +25,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     <PackageReference Include="OrderPaymentService.Messages.LFDG" Version="1.0.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageReference Include="ThreadSafeDbContext" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>

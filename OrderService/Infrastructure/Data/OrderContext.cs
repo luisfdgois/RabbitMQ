@@ -1,10 +1,10 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ThreadSafe;
 using System.Reflection;
 
 namespace Infrastructure.Data
 {
-    public class OrderContext : DbContext
+    public class OrderContext : ThreadSafeDbContext
     {
         public OrderContext(DbContextOptions<OrderContext> options) : base(options) { }
 

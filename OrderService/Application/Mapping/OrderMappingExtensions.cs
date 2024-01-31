@@ -6,7 +6,7 @@ namespace Application.Mapping
 {
     public static class OrderMappingExtensions
     {
-        public static Order MapToDomainEntity(this RegisterOrderDto dto)
+        public static Order MapToDomainEntity(this RegisterOrderRequest dto)
         {
             var payment = dto.Payment.ConvertToPaymentObject(dto.PaymentType);
 

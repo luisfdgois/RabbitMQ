@@ -1,4 +1,5 @@
-﻿using Application.UseCases.Orders.ListOrders;
+﻿using Application.UseCases.Orders.GetOrderById;
+using Application.UseCases.Orders.ListOrders;
 using Application.UseCases.Orders.RegisterOrder;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,22 @@ namespace API.Controllers
     {
         [HttpGet]
         public async Task<IActionResult> GetOrders(
-            [FromServices] IListOrdersUseCase useCase)
+            [FromServices] IListOrdersUseCase useCase,
+            [FromQuery] ListOrdersRequest request)
         {
-            return Ok(await useCase.Execute());
+            return Ok(await useCase.Execute(request));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderById(
+            [FromServices] IGetOrderByIdUseCase useCase, 
+            [FromRoute] Guid id)
+        {
+            var result = await useCase.Execute(id);
+
+            if (result is null) return NotFound();
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -28,7 +42,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterOrder(
             [FromServices] IRegisterOrderUseCase useCase,
-            [FromBody] RegisterOrderDto dto)
+            [FromBody] RegisterOrderRequest dto)
         {
             await useCase.Execute(dto);
 
