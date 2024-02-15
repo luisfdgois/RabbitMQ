@@ -35,7 +35,7 @@ namespace Application.UseCases.Orders.RegisterOrder
 
                 var message = _mapper.Map<BusMessage>(order.Payment);
 
-                await _publisherBus.Publish(message);
+                _publisherBus.Publish(message);
             }
             catch (Exception ex)
             {
