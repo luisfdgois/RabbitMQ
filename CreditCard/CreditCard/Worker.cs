@@ -21,22 +21,22 @@ namespace CreditCard
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await Task.Yield();
+
             _consumer.Consume();
 
             _logger.LogInformation($"Worker running at: {DateTimeOffset.Now}");
-
-            await Task.CompletedTask;
         }
 
-        private async Task OnMessageAsync(object sender, QueueConsumerEventArgs args) =>
+        private async Task OnMessageAsync(object sender, QueueConsumerEventArgs args)
+        {
+            await Task.Yield();
 
-            await Task.Run(() =>
-            {
-                _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
+            _logger.LogInformation($"New Message. OrderId: {args.Message.OrderId}");
 
-                CreditAnalysisService.Analyze(args.Message, out ProcessedCreditMessage processedCredit);
+            CreditAnalysisService.Analyze(args.Message, out ProcessedCreditMessage processedCredit);
 
-                _publisher.Publish(message: processedCredit.ToString());
-            });
+            _publisher.Publish(message: processedCredit.ToString());
+        }
     }
 }
