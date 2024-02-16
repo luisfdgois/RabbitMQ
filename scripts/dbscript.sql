@@ -19,8 +19,8 @@ CREATE TABLE "Order" (
 
 CREATE TABLE "Payment" (
     "Id" uuid NOT NULL,
-    "Approved" boolean NOT NULL,
     "OrderId" uuid NOT NULL,
+    "Status" integer NOT NULL,
     "CreatedOn" timestamp with time zone NOT NULL,
     "LastUpdate" timestamp with time zone NOT NULL,
     CONSTRAINT "PK_Payment" PRIMARY KEY ("Id"),
