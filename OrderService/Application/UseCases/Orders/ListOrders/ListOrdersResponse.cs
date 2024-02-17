@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-
-namespace Application.UseCases.Orders.ListOrders
+﻿namespace Application.UseCases.Orders.ListOrders
 {
-    public record ListOrdersResponse(Guid Id, PaymentStatus PaymentStatus, string ProductDescription);
+    public record ListOrdersResponse(Guid Id, string PaymentStatus, string ProductDescription);
 }

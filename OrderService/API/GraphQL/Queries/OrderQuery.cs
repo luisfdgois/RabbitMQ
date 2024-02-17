@@ -1,7 +1,9 @@
 ﻿using API.GraphQL.Queries.GetOrderById;
+using API.GraphQL.Queries.ListOrders;
 using Application.UseCases.Orders.GetOrderById;
 using Application.UseCases.Orders.ListOrders;
 using Application.UseCases.Orders.ListOrders.GraphQL;
+using MediatR;
 
 namespace API.GraphQL.Queries
 {
@@ -13,27 +15,31 @@ namespace API.GraphQL.Queries
 
             descriptor.Field("orders")
                       .Argument("filter", a => a.Type<ListOrdersRequestType>())
-                      .Type<ListType<ListOrdersDtoType>>()
+                      .Type<ListType<ListOrdersResponseType>>()
                       .Resolve(async context =>
                       {
-                          var filters = context.ArgumentValue<ListOrdersRequest>("filter");
+                          var request = context.ArgumentValue<ListOrdersRequest>("filter");
 
-                          var useCase = context.Service<IListOrdersUseCase>();
+                          var mediator = context.Service<IMediator>();
 
-                          return await useCase.Execute(filters);
+                          var response = await mediator.Send(request);
+
+                          return response;
                       });
 
             descriptor.Field("orderById")
                       .Argument("id", a => a.Type<StringType>())
-                      .Type<GetOrderByIdDtoType>()
+                      .Type<GetOrderByIdResponseType>()
                       .Resolve(async context =>
                       {
                           var idString = context.ArgumentValue<string>("id");
                           var id = new Guid(idString);
 
-                          var useCase = context.Service<IGetOrderByIdUseCase>();
+                          var mediator = context.Service<IMediator>();
 
-                          return await useCase.Execute(id);
+                          var response = await mediator.Send(new GetOrderByIdRequest(id));
+
+                          return response;
                       });
 
         }

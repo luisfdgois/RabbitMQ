@@ -19,15 +19,15 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(
-            [FromServices] IGetOrderByIdUseCase useCase, 
-            [FromRoute] Guid id)
+        [ProducesResponseType(typeof(GetOrderByIdResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetOrderById([FromRoute] Guid id)
         {
-            var result = await useCase.Execute(id);
+            var response = await _mediator.Send(new GetOrderByIdRequest(id));
 
-            if (result is null) return NotFound();
+            if (response is null) return NotFound();
 
-            return Ok(result);
+            return Ok(response);
         }
 
         [HttpGet]

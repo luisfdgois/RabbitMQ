@@ -10,8 +10,6 @@ namespace Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<IGetOrderByIdUseCase, GetOrderByIdUseCase>();
-
             services.AddMediatR(conf => conf.RegisterServicesFromAssembly(typeof(Bootstrapper).Assembly));
 
             return services;

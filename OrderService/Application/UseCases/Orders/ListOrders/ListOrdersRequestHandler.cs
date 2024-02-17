@@ -19,7 +19,7 @@ namespace Application.UseCases.Orders.ListOrders
             return await _dbContext.Set<Order>()
                        .Include(o => o.Payment)
                        .AsNoTrackingWithIdentityResolution()
-                       .Select(o => new ListOrdersResponse(o.Id, o.Payment.Status, o.ProductDescription))
+                       .Select(o => new ListOrdersResponse(o.Id, o.Payment.Status.ToString(), o.ProductDescription))
                        .ToListAsync();
         }
     }

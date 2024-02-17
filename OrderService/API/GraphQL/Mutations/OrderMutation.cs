@@ -1,6 +1,6 @@
 ﻿using API.GraphQL.Mutations.RegisterOrder;
 using Application.UseCases.Orders.RegisterOrder;
-using System.Text.Json;
+using MediatR;
 
 namespace API.GraphQL.Mutations
 {
@@ -15,11 +15,11 @@ namespace API.GraphQL.Mutations
                       .Type<BooleanType>()
                       .Resolve(async context =>
                       {
-                          var input = context.ArgumentValue<RegisterOrderRequest>("input");
-                          
-                          var useCase = context.Service<IRegisterOrderUseCase>();
+                          var request = context.ArgumentValue<RegisterOrderRequest>("input");
 
-                          await useCase.Execute(input);
+                          var mediator = context.Service<IMediator>();
+
+                          await mediator.Send(request);
 
                           return true;
                       });
