@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using MediatR;
 using Newtonsoft.Json.Linq;
 
 namespace Application.UseCases.Orders.RegisterOrder
@@ -8,5 +9,5 @@ namespace Application.UseCases.Orders.RegisterOrder
                                        int ProductQuantity,
                                        string UserEmail,
                                        PaymentType PaymentType,
-                                       JObject Payment);
+                                       JObject Payment) : IRequest;
 }

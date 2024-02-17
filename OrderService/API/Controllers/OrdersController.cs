@@ -1,7 +1,9 @@
 ﻿using Application.UseCases.Orders.GetOrderById;
 using Application.UseCases.Orders.ListOrders;
 using Application.UseCases.Orders.RegisterOrder;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -9,12 +11,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetOrders(
-            [FromServices] IListOrdersUseCase useCase,
-            [FromQuery] ListOrdersRequest request)
+        private readonly IMediator _mediator;
+
+        public OrdersController(IMediator mediator)
         {
-            return Ok(await useCase.Execute(request));
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
@@ -29,6 +30,15 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ListOrdersResponse>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new ListOrdersRequest(), cancellationToken);
+
+            return Ok(response);
+        }
+
         /// <summary>
         /// This function registers a new order
         /// </summary>
@@ -37,14 +47,10 @@ namespace API.Controllers
         /// ####   Payment Properties: 
         /// *   { Number: "", CVV: "", NumberOfInstallment: 0, ValuePerInstallment: 0 }
         /// </remarks>
-        /// <param name="useCase"></param>
-        /// <param name="dto"></param>
         [HttpPost]
-        public async Task<IActionResult> RegisterOrder(
-            [FromServices] IRegisterOrderUseCase useCase,
-            [FromBody] RegisterOrderRequest dto)
+        public async Task<IActionResult> RegisterOrder([FromBody] RegisterOrderRequest request, CancellationToken cancellationToken)
         {
-            await useCase.Execute(dto);
+            await _mediator.Send(request, cancellationToken);
 
             return Ok();
         }

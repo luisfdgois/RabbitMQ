@@ -1,6 +1,4 @@
 ﻿using Application.UseCases.Orders.GetOrderById;
-using Application.UseCases.Orders.ListOrders;
-using Application.UseCases.Orders.RegisterOrder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -12,8 +10,6 @@ namespace Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<IRegisterOrderUseCase, RegisterOrderUseCase>();
-            services.AddScoped<IListOrdersUseCase, ListOrdersUseCase>();
             services.AddScoped<IGetOrderByIdUseCase, GetOrderByIdUseCase>();
 
             services.AddMediatR(conf => conf.RegisterServicesFromAssembly(typeof(Bootstrapper).Assembly));
