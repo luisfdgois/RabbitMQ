@@ -5,10 +5,10 @@ using Infrastructure.Services.Bus.Consumers;
 using Infrastructure.Services.Bus.Publishers;
 using Infrastructure.Services.Bus.Publishers.Strategies;
 using Infrastructure.Services.Bus.Settings;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 
 namespace Infrastructure
 {
@@ -23,26 +23,27 @@ namespace Infrastructure
             return services;
         }
 
+        public static IServiceCollection AddBackgroundService(this IServiceCollection services)
+        {
+            services.AddHostedService<PaymentProcessedWorker>();
+
+            return services;
+        }
+
         public static IServiceCollection AddInfrestructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             var rabbitMQProperties = configuration.GetSection("RabbitMQProperties").Get<RabbitMQProperties>();
 
-            services.AddMassTransit(registration =>
+            services.AddSingleton(_ =>
             {
-                registration.AddConsumer<ConsumerBus>()
-                            .Endpoint(endpoint => {
-                                endpoint.Name = "paymentprocessed-queue";
-                            });
-
-                registration.UsingRabbitMq((context, config) =>
-                {
-                    config.Host(new Uri(rabbitMQProperties.Uri));
-                    config.ConfigureEndpoints(context);
-                });
+                var connectionFactory = new ConnectionFactory { Uri = new Uri(rabbitMQProperties.Uri) };
+                return connectionFactory.CreateConnection();
             });
 
             services.AddSingleton<IPublisherBus, PublisherBus>()
                     .AddSingleton<IStrategyPublisherBus, CreditCardBus>();
+
+            services.AddSingleton<IConsumerBus, ConsumerBus>();
 
             return services;
         }
