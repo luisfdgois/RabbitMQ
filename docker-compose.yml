@@ -42,6 +42,9 @@ services:
             DBUser: postgres
             DBPassword: passpostgres
             DataBase: OrderServiceDB
+            Logging__Loglevel__Default: Debug
+            Logging__Loglevel__Microsoft.AspNetCore: Debug
+            DOTNET_URLS: http://+:80
 
     service-creditcard: 
         container_name: service-creditcard
