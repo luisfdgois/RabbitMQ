@@ -7,6 +7,7 @@ namespace CreditCard.Bus.Consumer
     public class ConsumerBus : IConsumer<CreditRequestedMessage>
     {
         private readonly ILogger<ConsumerBus> _logger;
+        private const string DestinationQueue = "paymentprocessed-queue";
 
         public ConsumerBus(ILogger<ConsumerBus> logger)
         {
@@ -23,7 +24,9 @@ namespace CreditCard.Bus.Consumer
 
                 CreditAnalysisService.Analyze(message, out PaymentProcessedMessage paymentProcessedMessage);
 
-                await context.Publish(paymentProcessedMessage);
+                var endpoint = await context.GetSendEndpoint(new Uri($"queue:{DestinationQueue}"));
+
+                await endpoint.Send(paymentProcessedMessage, context => context.Durable = true);
             }
             catch (Exception ex)
             {
