@@ -4,12 +4,12 @@ using Messages;
 
 namespace CreditCard.Bus.Consumer
 {
-    public class ConsumerBus : IConsumer<CreditRequestedMessage>
+    public class CreditCardConsumer : IConsumer<CreditRequestedMessage>
     {
-        private readonly ILogger<ConsumerBus> _logger;
+        private readonly ILogger<CreditCardConsumer> _logger;
         private const string DestinationQueue = "paymentprocessed-queue";
 
-        public ConsumerBus(ILogger<ConsumerBus> logger)
+        public CreditCardConsumer(ILogger<CreditCardConsumer> logger)
         {
             _logger = logger;
         }
@@ -24,7 +24,7 @@ namespace CreditCard.Bus.Consumer
 
                 CreditAnalysisService.Analyze(message, out PaymentProcessedMessage paymentProcessedMessage);
 
-                var endpoint = await context.GetSendEndpoint(new Uri($"queue:{DestinationQueue}"));
+                var endpoint = await context.GetResponseEndpoint<PaymentProcessedMessage>();
 
                 await endpoint.Send(paymentProcessedMessage, context => context.Durable = true);
             }

@@ -6,9 +6,9 @@ using System.Text.Json;
 
 namespace Infrastructure.Services.Bus.Publishers.Strategies
 {
-    public class CreditCardBus : BaseStrategyPublisherBus, IStrategyPublisherBus
+    public class CreditCardPublisher : BaseStrategyPublisherBus, IStrategyPublisherBus
     {
-        public CreditCardBus(IBus bus, ILogger<CreditCardBus> logger) : base(bus, logger) { }
+        public CreditCardPublisher(IBus bus, ILogger<CreditCardPublisher> logger) : base(bus, logger) { }
 
         public bool IsMatch(BusMessage message)
         {
@@ -21,7 +21,7 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
 
             try
             {
-                var endpoint = await _bus.GetSendEndpoint(new Uri($"queue:{_queue}"));
+                var endpoint = await _bus.GetPublishSendEndpoint<CreditRequestedMessage>();
 
                 await endpoint.Send(creditcardMessage, context => context.Durable = true);
 
@@ -29,7 +29,7 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error when trying to publish message to Queue: {_queue}. Body: {JsonSerializer.Serialize(message)}. ErrorMessage: {ex.Message}");
+                _logger.LogError($"Error when trying to publish message {nameof(CreditRequestedMessage)}. Body: {JsonSerializer.Serialize(message)}. ErrorMessage: {ex.Message}");
             }
 
             return false;
