@@ -7,12 +7,12 @@ using System.Text.Json;
 
 namespace Infrastructure.Services.Bus.Consumers
 {
-    public class ConsumerBus : IConsumer<PaymentProcessedMessage>
+    public class PaymentProcessedConsumer : IConsumer<PaymentProcessedMessage>
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<ConsumerBus> _logger;
+        private readonly ILogger<PaymentProcessedConsumer> _logger;
 
-        public ConsumerBus(ILogger<ConsumerBus> logger, IMediator mediator)
+        public PaymentProcessedConsumer(ILogger<PaymentProcessedConsumer> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;

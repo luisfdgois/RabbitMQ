@@ -28,10 +28,7 @@ namespace Infrastructure
 
             services.AddMassTransit(registration =>
             {
-                registration.AddConsumer<ConsumerBus>()
-                            .Endpoint(endpoint => {
-                                endpoint.Name = "paymentprocessed-queue";
-                            });
+                registration.AddConsumer<PaymentProcessedConsumer>();
 
                 registration.UsingRabbitMq((context, config) =>
                 {
@@ -41,7 +38,7 @@ namespace Infrastructure
             });
 
             services.AddSingleton<IPublisherBus, PublisherBus>()
-                    .AddSingleton<IStrategyPublisherBus, CreditCardBus>();
+                    .AddSingleton<IStrategyPublisherBus, CreditCardPublisher>();
 
             return services;
         }

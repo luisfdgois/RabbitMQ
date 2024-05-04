@@ -8,8 +8,6 @@ namespace Infrastructure.Services.Bus.Publishers.Strategies
         protected readonly IBus _bus;
         protected readonly ILogger<BaseStrategyPublisherBus> _logger;
 
-        protected readonly string _queue = "creditcard-queue";
-
         protected BaseStrategyPublisherBus(IBus bus, ILogger<BaseStrategyPublisherBus> logger)
         {
             _bus = bus;

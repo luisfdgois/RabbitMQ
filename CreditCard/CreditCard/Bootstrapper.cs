@@ -14,11 +14,11 @@ namespace CreditCard
             {
                 configure.SetKebabCaseEndpointNameFormatter();
 
-                configure.AddConsumer<ConsumerBus>()
-                         .Endpoint(endpoint => {
-                            endpoint.Name = "creditcard-queue";
-                            //endpoint.PrefetchCount = 1;
-                         });
+                configure.AddConsumer<CreditCardConsumer>();
+                         //.Endpoint(endpoint => {
+                         //   endpoint.Name = "creditcard-queue";
+                         //   //endpoint.PrefetchCount = 1;
+                         //});
 
                 configure.UsingRabbitMq((context, config) =>
                 {
